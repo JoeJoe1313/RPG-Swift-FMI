@@ -19,7 +19,7 @@ class Game {
         var players:[Player] = []
         var totalPlayers = 0
         repeat {
-            print("Моля избере брои играчи (2 - 4): ")
+            print("Моля избере брой играчи (2 - 4): ")
             if let number = readLine(as: Int.self) {
                 totalPlayers = number
             } else {
