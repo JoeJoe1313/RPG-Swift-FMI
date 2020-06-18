@@ -1,4 +1,7 @@
-# Final Project (Draft)
+# SwiftFMIRPCore
+This project defines the main building blocks for a RolePlayingGame. It conatians a stub implementation to show that a game can be build. The project is separaetd to several modules and each module, can be re-defined.
+
+## Final Project (Draft)
 Всеки стдудент, работещ над този финален проект, трябва да реализира поне два от модулите, описани по-долу, в собствено репозитори, изпозлвайки Swift и знанията от курса.
 
 Трябва да спазите протоколите от основното репо, предоставено от нас, за да е възможно "сглобяването" на различни модули в една работеща версия на игра.
