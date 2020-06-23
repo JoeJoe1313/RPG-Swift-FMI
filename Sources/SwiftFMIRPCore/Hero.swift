@@ -40,12 +40,12 @@ struct DefaultHero: Hero {
 
 }
 
-struct SomeHero: Hero {
+struct Elf: Hero {
    var race: String  = "Elf"
 
     var energy: Int = 8
     var lifePoitns: Int = 10
 
     var weapon: Weapon?  = Bow()
-    var armor: Armor? = HeavyArmour()
+    var armor: Armor? = HeavyArmor()
 }
