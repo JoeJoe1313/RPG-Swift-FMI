@@ -8,7 +8,7 @@ struct NoArmor: Armor {
     var defence: Int = 0
 }
 
-struct HeavyArmour: Armor {
+struct HeavyArmor: Armor {
     var attack: Int = 1
     var defence: Int = 4
 }
