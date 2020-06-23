@@ -19,19 +19,22 @@ class Game {
         var players:[Player] = []
         var totalPlayers = 0
         repeat {
-            print("Моля избери брой играчи (2 - 4): ")
+            print("Please choose the number of players (2 - 4): ")
             if let number = readLine(as: Int.self) {
                 totalPlayers = number
+                if totalPlayers < 2 || totalPlayers > 4 {
+                    print("Invalid number of players! Please try again.")
+                }
             } else {
-              print("Невалиден вход! Моля, опитай пак.")  
+              print("Invalid input! Please try again.")  
             }
         } while totalPlayers < 2 || totalPlayers > 4
 
         // 1. Избор на брой играчи. Минимум 2 броя.
         
-       print("Вие избрахте \(totalPlayers) играчи. Системата сега ще избере вашите герои.")
+       print("You chose \(totalPlayers) players. The system will select your heroes.")
        for i in 1...totalPlayers {
-           print("Генериране на играч...")
+           print("Generating player...")
            players.append(playerGenerator.generatePlayer(name: "Player #\(i)"))
        }
        
@@ -53,14 +56,14 @@ class Game {
         while activePlayers(allPlayers: players).count > 1  {
             if var currentPlayer:Player = players[currentPlayerIndex] as? Player, currentPlayer.isAlive {
                 let playerNumber = currentPlayerIndex + 1
-                print("Сега е на ход играч №\(playerNumber) - \(currentPlayer.name)")
+                print("It is player №\(playerNumber) turn - \(currentPlayer.name)")
                 
                 ///команди от играча
                 var playerMoveIsNotFinished = true
                 repeat {
-                    print("Моля въведете команда от възможните: ")
+                    print("Please choose one of the following commands: ")
                     let availableMoves = map.availableMoves(player: currentPlayer)
-                    var allCommands = ["finish", "map"]
+                    var allCommands = ["finish", "map", "nuke"]
                     if currentPlayer.isAlive {
                         allCommands.append("seppuku")
                         availableMoves.forEach { (move) in
@@ -84,21 +87,26 @@ class Game {
                             switch command {
                             case "finish":
                                 playerMoveIsNotFinished = false
-                                print("Вашият ход приключи.")
+                                print("Your turn ended.")
                             case "map":
-                                print("Отпечатваме картата:")
+                                print("Printing map:")
                                 mapRenderer.render(map: map)
                             case "seppuku":
                                 print("Ritual suicide...")
                                 currentPlayer.isAlive = false
                                 playerMoveIsNotFinished = false
-                                print("Вашият ход приключи.")
+                                print("Your turn ended.")
+                            case "nuke":
+                                for i in 1...players.count {
+                                    players[i-1].isAlive = false
+                                }
+                                playerMoveIsNotFinished = false
                             default:
-                                print("Непозната команда!")
+                                print("Unknown command!")
                             }
                         }
                     } else {
-                      print("Невалиден вход! Моля, опитай пак.")
+                      print("Invalid input! Please try again.")
                     }
                 } while playerMoveIsNotFinished
             }
@@ -109,9 +117,9 @@ class Game {
         }
         let winners = activePlayers(allPlayers: players)
         if winners.count > 0 {
-            print("Победител е: \(winners[0].name)")
+            print("The winner is: \(winners[0].name)")
         } else {
-            print("Няма победител :/. Опитайте да изиграете нова игра.")
+            print("There is no winner :/. Try to play a new game.")
         }
 
         print("RPG game has finished.")

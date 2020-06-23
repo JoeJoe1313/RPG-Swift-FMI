@@ -28,3 +28,24 @@ protocol EquipmentGenerator {
     var allArmors: [Armor] {get}
     var allWeapons: [Weapon] {get}
 }
+
+struct DefaultHero: Hero {
+   var race: String  = "Random Race"
+
+    var energy: Int = 5
+    var lifePoitns: Int = 7
+
+    var weapon: Weapon?  = nil
+    var armor: Armor? = nil
+
+}
+
+struct SomeHero: Hero {
+   var race: String  = "Elf"
+
+    var energy: Int = 8
+    var lifePoitns: Int = 10
+
+    var weapon: Weapon?  = Bow()
+    var armor: Armor? = HeavyArmour()
+}
