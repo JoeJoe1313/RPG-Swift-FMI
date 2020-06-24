@@ -66,10 +66,13 @@ enum MapTileType {
     case wall
     case teleport
     case rock
+    case clash 
+    case player1
+    case player2
+    case player3
+    case player4
 }
 
 protocol MapGenerator {
     func generate(players:[Player]) -> Map
 }
-
-
