@@ -41,11 +41,41 @@ struct DefaultHero: Hero {
 }
 
 struct Elf: Hero {
-   var race: String  = "Elf"
+    var race: String  = "Elf"
 
     var energy: Int = 8
     var lifePoitns: Int = 10
 
     var weapon: Weapon?  = Bow()
+    var armor: Armor? = LightArmor()
+}
+
+struct Orc: Hero {
+    var race: String = "Orc"
+
+    var energy: Int = 8
+    var lifePoitns: Int = 10
+
+    var weapon: Weapon? = Axe()
     var armor: Armor? = HeavyArmor()
+}
+
+struct Human: Hero {
+    var race: String = "Human"
+
+    var energy: Int = 8
+    var lifePoitns: Int = 10
+
+    var weapon: Weapon? = Sword()
+    var armor: Armor? = MediumArmor()
+}
+
+struct Goblin: Hero {
+    var race: String = "Goblin"
+
+    var energy: Int = 8
+    var lifePoitns: Int = 10
+
+    var weapon: Weapon? = WoodenStick()
+    var armor: Armor? = NoArmor()
 }
