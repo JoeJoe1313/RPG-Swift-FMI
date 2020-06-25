@@ -17,6 +17,7 @@ class Game {
     func run() {
         print("Starting the RPG game...")
         var players:[Player] = []
+        let heroes: [Hero] = [Elf(), Orc(), Human(), Goblin()]
         var totalPlayers = 0
         repeat {
             print("Please choose the number of players (2 - 4): ")
@@ -36,6 +37,8 @@ class Game {
        for i in 1...totalPlayers {
            print("Generating player...")
            players.append(playerGenerator.generatePlayer(name: "Player #\(i)"))
+           players[i-1].hero = heroes.randomElement()!
+           print("\(players[i-1].name) is \(players[i-1].hero.race) with \(players[i-1].hero.energy) energy, \(players[i-1].hero.lifePoitns) life points, \(players[i-1].hero.weapon!) and \(players[i-1].hero.armor!)")
        }
        
        
