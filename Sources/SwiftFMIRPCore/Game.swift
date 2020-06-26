@@ -6,13 +6,11 @@ class Game {
     var mapGenerator: MapGenerator
     var playerGenerator: PlayerGenerator
     var mapRenderer: MapRenderer
-    var heroGenerator: HeroGenerator
 
-    init(mapGenerator: MapGenerator, playerGenerator: PlayerGenerator, mapRenderer: MapRenderer, heroGenerator: HeroGenerator) {
+    init(mapGenerator: MapGenerator, playerGenerator: PlayerGenerator, mapRenderer: MapRenderer) {
         self.mapGenerator = mapGenerator
         self.playerGenerator = playerGenerator
         self.mapRenderer = mapRenderer
-        self.heroGenerator = heroGenerator
     }
     
     //implement main logic
@@ -38,7 +36,6 @@ class Game {
        for i in 1...totalPlayers {
            print("Generating player...")
            players.append(playerGenerator.generatePlayer(name: "Player #\(i)"))
-           players[i-1].hero = heroGenerator.getRandom()
            print("\(players[i-1].name) is \(players[i-1].hero.race) with \(players[i-1].hero.energy) energy, \(players[i-1].hero.lifePoitns) life points, \(players[i-1].hero.weapon!) and \(players[i-1].hero.armor!)")
        }
        
