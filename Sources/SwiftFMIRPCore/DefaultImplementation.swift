@@ -19,8 +19,10 @@ struct DefaultPlayerGenerator: PlayerGenerator {
 }
 
 struct DefaultHeroGenerator: HeroGenerator {
+    let heroes: [Hero] = [Elf(), Orc(), Human(), Goblin()]
+
     func getRandom() -> Hero {
-        return DefaultHero()
+        return heroes.randomElement()!
     }
 }
 
