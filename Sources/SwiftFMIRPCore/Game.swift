@@ -63,8 +63,8 @@ class Game {
                 var playerMoveIsNotFinished = true
                 repeat {
                     print("Please choose one of the following commands: ")
-                    let availableMoves = map.availableMoves(player: currentPlayer)
-                    var allCommands = ["finish", "map", "nuke"]
+                    let availableMoves = map.availableMoves(player: currentPlayer) //here
+                    var allCommands = ["move","finish", "map", "nuke"]
                     if currentPlayer.isAlive {
                         allCommands.append("seppuku")
                         availableMoves.forEach { (move) in
@@ -102,6 +102,50 @@ class Game {
                                     players[i-1].isAlive = false
                                 }
                                 playerMoveIsNotFinished = false
+                            case "move":
+                                repeat {
+                                    print("Please choose one of the following commands: ")
+                                    let availableMoveMoves = map.availableMoves(player: currentPlayer) //here
+                                    var allMoveCommands = ["up","down", "left", "right"]
+                                    availableMoveMoves.forEach { (move) in
+                                        allMoveCommands.append(move.friendlyCommandName)
+                                    }
+                                    print("\(allMoveCommands)")
+                                    //print("\(players[0].name) and \(players[1].name)")
+                                    if let moveCommand = readLine(as: String.self) {
+                                        //TODO: провери дали не е от някои от възможните други действия
+                                        //TODO: ако е от тях изпълни действието
+                                        if let moveMove = availableMoveMoves.first(where: { (moveMove) -> Bool in
+                                            moveMove.friendlyCommandName == command
+                                        }) {
+                                        //разпозната команда
+                                        map.move(player: currentPlayer, move: moveMove)
+                            
+                                        } else {
+                                            //иначе, провери за
+                                            //специални команди
+                                            switch moveCommand {
+                                            case "up":
+                                                print("UP")
+                                                playerMoveIsNotFinished = false
+                                            case "down":
+                                                print("DOWN")
+                                                playerMoveIsNotFinished = false
+                                            case "left":
+                                                print("LEFT")
+                                                playerMoveIsNotFinished = false
+                                            case "right":
+                                                print("RIGHT")
+                                                playerMoveIsNotFinished = false
+                                            default:
+                                                print("Unknown command!")
+                                            }
+                                        }
+                                    }
+                                    else {
+                                        print("Invalid input! Please try again.")
+                                    }
+                                } while playerMoveIsNotFinished
                             default:
                                 print("Unknown command!")
                             }
