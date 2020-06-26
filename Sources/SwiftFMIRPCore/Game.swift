@@ -116,11 +116,11 @@ class Game {
                                         //TODO: провери дали не е от някои от възможните други действия
                                         //TODO: ако е от тях изпълни действието
                                         if let moveMove = availableMoveMoves.first(where: { (moveMove) -> Bool in
-                                            moveMove.friendlyCommandName == command
+                                            moveMove.friendlyCommandName == moveCommand
                                         }) {
                                         //разпозната команда
                                         map.move(player: currentPlayer, move: moveMove)
-                            
+                                        playerMoveIsNotCorrect = false
                                         } else {
                                             //иначе, провери за
                                             //специални команди
