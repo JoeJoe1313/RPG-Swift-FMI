@@ -103,6 +103,7 @@ class Game {
                                 }
                                 playerMoveIsNotFinished = false
                             case "move":
+                                var playerMoveIsNotCorrect = true
                                 repeat {
                                     print("Please choose one of the following commands: ")
                                     let availableMoveMoves = map.availableMoves(player: currentPlayer) //here
@@ -111,7 +112,6 @@ class Game {
                                         allMoveCommands.append(move.friendlyCommandName)
                                     }
                                     print("\(allMoveCommands)")
-                                    //print("\(players[0].name) and \(players[1].name)")
                                     if let moveCommand = readLine(as: String.self) {
                                         //TODO: провери дали не е от някои от възможните други действия
                                         //TODO: ако е от тях изпълни действието
@@ -127,25 +127,26 @@ class Game {
                                             switch moveCommand {
                                             case "up":
                                                 print("UP")
-                                                playerMoveIsNotFinished = false
+                                                playerMoveIsNotCorrect = false
                                             case "down":
                                                 print("DOWN")
-                                                playerMoveIsNotFinished = false
+                                                playerMoveIsNotCorrect = false
                                             case "left":
                                                 print("LEFT")
-                                                playerMoveIsNotFinished = false
+                                                playerMoveIsNotCorrect = false
                                             case "right":
                                                 print("RIGHT")
-                                                playerMoveIsNotFinished = false
+                                                playerMoveIsNotCorrect = false
                                             default:
                                                 print("Unknown command!")
+                                                playerMoveIsNotCorrect = true
                                             }
                                         }
                                     }
                                     else {
                                         print("Invalid input! Please try again.")
                                     }
-                                } while playerMoveIsNotFinished
+                                } while playerMoveIsNotCorrect
                             default:
                                 print("Unknown command!")
                             }
