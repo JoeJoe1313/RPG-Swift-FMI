@@ -50,8 +50,6 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
 
 ## За мен
 
-Промени: 
-
 **Промени:** 
 
 * **enum MapTileType**
