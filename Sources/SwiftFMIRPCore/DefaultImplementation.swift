@@ -165,7 +165,7 @@ class DefaultMap : Map {
 
     func move(player: inout Player, move: PlayerMove) {
         //ТОДО: редуцирай енергията на героя на играча с 1
-
+        player.hero.energy = player.hero.energy - 1
         //Make the move 
         // go up
         if move.direction == .up {
