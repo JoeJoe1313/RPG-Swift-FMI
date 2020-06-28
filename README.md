@@ -49,3 +49,17 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
 Повече информация може да намерите [тук] (https://github.com/SwiftFMI/rpgcore).
 
 ## За мен
+
+Промени: 
+
+**Промени:** 
+
+* **enum MapTileType**
+    * добавяне на **player1**, **player2**, **player3**, **player4**, за да може да се визуализира къде се намират играчите на самата карта
+    
+    * добавяне на **clash**, за да показва кога имаме повече от един играч на едно поле
+
+* **protocol Player**
+    * добавяне на **positionRowCol**, за да можем да пазим и достъпваме позицията на играча
+    
+    * промяна на player параметър в move на **inout**, за да може да бъде неконстантен, тъй като искаме да сменим позицията му
