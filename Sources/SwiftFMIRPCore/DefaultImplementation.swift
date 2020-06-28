@@ -169,19 +169,59 @@ class DefaultMap : Map {
         //Make the move 
         // go up
         if move.direction == .up {
+            maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
             player.positionRowCol.x = player.positionRowCol.x - 1
+            if player.name == "Player #1" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
+            } else if player.name == "Player #2" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
+            } else if player.name == "Player #3" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player3
+            } else if player.name == "Player #4" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
+            }
         }
         // go down
         if move.direction == .down {
+            maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
             player.positionRowCol.x = player.positionRowCol.x + 1
+            if player.name == "Player #1" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
+            } else if player.name == "Player #2" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
+            } else if player.name == "Player #3" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player3
+            } else if player.name == "Player #4" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
+            }
         }
         // go left
         if move.direction == .left {
-           player.positionRowCol.y = player.positionRowCol.y - 1
+            maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
+            player.positionRowCol.y = player.positionRowCol.y - 1
+            if player.name == "Player #1" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
+            } else if player.name == "Player #2" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
+            } else if player.name == "Player #3" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player3
+            } else if player.name == "Player #4" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
+            }
         }
         // go right 
         if move.direction == .right {
+            maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
             player.positionRowCol.y = player.positionRowCol.y + 1
+            if player.name == "Player #1" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
+            } else if player.name == "Player #2" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
+            } else if player.name == "Player #3" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player3
+            } else if player.name == "Player #4" {
+                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
+            }
         }
     }
     
@@ -245,6 +285,7 @@ class DefaultMapRenderer: MapRenderer {
     }
     
     private func renderMapLegend() {
+        print("\n")
         print("📦 - Treasure Chest: contains weapon or armor")
         print("🗿 - Rock: opens the chest")
         print("💿 - Teleport: teleports you from one teleport to another")
