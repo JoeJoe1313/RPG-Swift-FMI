@@ -143,19 +143,19 @@ class DefaultMap : Map {
 
     func availableMoves(player: Player) -> [PlayerMove] {
         var availableMoves: [PlayerMove] = [PlayerMove]()
-        //Can it go up?
+        // Can it go up?
         if Int(player.positionRowCol.x) - 1 >= 0 && maze[Int(player.positionRowCol.x) - 1][Int(player.positionRowCol.y)].type != .wall {
             availableMoves.append(StandartPlayerMove(direction: .up))
         } 
-        //Can it go down?
+        // Can it go down?
         if Int(player.positionRowCol.x) + 1 < maze.count && maze[Int(player.positionRowCol.x) + 1][Int(player.positionRowCol.y)].type != .wall {
             availableMoves.append(StandartPlayerMove(direction: .down))
         }
-        //Can it go left?
+        // Can it go left?
         if Int(player.positionRowCol.y) - 1 >= 0 && maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y) - 1].type != .wall {
             availableMoves.append(StandartPlayerMove(direction: .left))
         } 
-        //Can it go right?
+        // Can it go right?
         if Int(player.positionRowCol.y) + 1 < maze[0].count && maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y) + 1].type != .wall {
             availableMoves.append(StandartPlayerMove(direction: .right))
         }
@@ -164,7 +164,25 @@ class DefaultMap : Map {
     }
 
     func move(player: Player, move: PlayerMove) {
-       //ТОДО: редуцирай енергията на героя на играча с 1
+        //ТОДО: редуцирай енергията на героя на играча с 1
+
+        //Make the move 
+        // go up
+        if move.direction == .up {
+            //player.positionRowCol.x = player.positionRowCol.x - 1
+        }
+        // go down
+        if move.direction == .down {
+            //player.positionRowCol.x = player.positionRowCol.x + 1
+        }
+        // go left
+        if move.direction == .left {
+           //player.positionRowCol.y = player.positionRowCol.y - 1
+        }
+        // go right 
+        if move.direction == .right {
+            //player.positionRowCol.y = player.positionRowCol.y + 1
+        }
     }
     
 }
