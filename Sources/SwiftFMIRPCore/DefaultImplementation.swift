@@ -163,25 +163,25 @@ class DefaultMap : Map {
         return availableMoves
     }
 
-    func move(player: Player, move: PlayerMove) {
+    func move(player: inout Player, move: PlayerMove) {
         //ТОДО: редуцирай енергията на героя на играча с 1
 
         //Make the move 
         // go up
         if move.direction == .up {
-            //player.positionRowCol.x = player.positionRowCol.x - 1
+            player.positionRowCol.x = player.positionRowCol.x - 1
         }
         // go down
         if move.direction == .down {
-            //player.positionRowCol.x = player.positionRowCol.x + 1
+            player.positionRowCol.x = player.positionRowCol.x + 1
         }
         // go left
         if move.direction == .left {
-           //player.positionRowCol.y = player.positionRowCol.y - 1
+           player.positionRowCol.y = player.positionRowCol.y - 1
         }
         // go right 
         if move.direction == .right {
-            //player.positionRowCol.y = player.positionRowCol.y + 1
+            player.positionRowCol.y = player.positionRowCol.y + 1
         }
     }
     
