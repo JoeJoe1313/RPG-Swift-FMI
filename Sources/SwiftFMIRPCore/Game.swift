@@ -72,7 +72,7 @@ class Game {
        
        
 
-        var map = mapGenerator.generate(players: players)
+        let map = mapGenerator.generate(players: players)
         // 1. Избор на брой играчи. Минимум 2 броя.
         // 1. Генериране на карта с определени брой размери на базата на броя играчи.
         // 1. Докато има повече от един оцелял играч, изпълнявай ходове.
@@ -110,9 +110,7 @@ class Game {
                             move.friendlyCommandName == command
                         }) {
                             //разпозната команда
-                            let x = Int(currentPlayer.positionRowCol.x), y = Int(currentPlayer.positionRowCol.y)
                             map.move(player: &currentPlayer, move: move)
-                            map.maze[x][y].type = .empty
                         } else {
                             //иначе, провери за
                             //специални команди

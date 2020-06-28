@@ -1,7 +1,7 @@
 protocol Map {
     init(players: [Player])
     var players: [Player] {get}
-    var maze: [[MapTile]] {get set}
+    var maze: [[MapTile]] {get}
 
     func availableMoves(player: Player) -> [PlayerMove]
     func move(player: inout Player, move: PlayerMove)
