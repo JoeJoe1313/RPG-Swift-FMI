@@ -164,56 +164,30 @@ class DefaultMap : Map {
     }
 
     func move(player: inout Player, move: PlayerMove) {
-        //ТОДО: редуцирай енергията на героя на играча с 1
+        // ТОДО: редуцирай енергията на героя на играча с 1
         player.hero.energy = player.hero.energy - 1
-        //Make the move 
+
+        // move
+        maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
         // go up
         if move.direction == .up {
-            maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
             player.positionRowCol.x = player.positionRowCol.x - 1
-            if player.name == "Player #1" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
-            } else if player.name == "Player #2" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
-            } else if player.name == "Player #3" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player3
-            } else if player.name == "Player #4" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
-            }
         }
         // go down
         if move.direction == .down {
-            maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
             player.positionRowCol.x = player.positionRowCol.x + 1
-            if player.name == "Player #1" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
-            } else if player.name == "Player #2" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
-            } else if player.name == "Player #3" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player3
-            } else if player.name == "Player #4" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
-            }
         }
         // go left
         if move.direction == .left {
-            maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
             player.positionRowCol.y = player.positionRowCol.y - 1
-            if player.name == "Player #1" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
-            } else if player.name == "Player #2" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
-            } else if player.name == "Player #3" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player3
-            } else if player.name == "Player #4" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
-            }
         }
         // go right 
         if move.direction == .right {
-            maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
             player.positionRowCol.y = player.positionRowCol.y + 1
-            if player.name == "Player #1" {
+        }
+
+        // change the position of the player icon
+        if player.name == "Player #1" {
                 maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
             } else if player.name == "Player #2" {
                 maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
@@ -222,7 +196,6 @@ class DefaultMap : Map {
             } else if player.name == "Player #4" {
                 maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
             }
-        }
     }
     
 }
