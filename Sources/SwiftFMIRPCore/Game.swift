@@ -1,3 +1,5 @@
+import Foundation
+
 func readLine<T: LosslessStringConvertible>(as type: T.Type) -> T? {
   return readLine().flatMap(type.init(_:))
 }
@@ -36,7 +38,35 @@ class Game {
        for i in 1...totalPlayers {
            print("Generating player...")
            players.append(playerGenerator.generatePlayer(name: "Player #\(i)"))
-           print("\(players[i-1].name) is \(players[i-1].hero.race) with \(players[i-1].hero.energy) energy, \(players[i-1].hero.lifePoitns) life points, \(players[i-1].hero.weapon!) and \(players[i-1].hero.armor!)")
+           //this is just a try!!!
+           //These are the fixed base points for the players ate the beginning of every game depending on the map
+           if totalPlayers == 2 {
+               if players[i-1].name == "Player #1" {
+                   players[i-1].positionRowCol = CGPoint(x: 9, y: 0)
+               } else if players[i-1].name == "Player #2" {
+                   players[i-1].positionRowCol = CGPoint(x: 0, y: 10)
+               }
+            } else if totalPlayers == 3 {
+               if players[i-1].name == "Player #1" {
+                   players[i-1].positionRowCol = CGPoint(x: 12, y: 0)
+               } else if players[i-1].name == "Player #2" {
+                   players[i-1].positionRowCol = CGPoint(x: 0, y: 13)
+               } else if players[i-1].name == "Player #3" {
+                   players[i-1].positionRowCol = CGPoint(x: 0, y: 0)
+               }
+            } else if totalPlayers == 4 {
+                if players[i-1].name == "Player #1" {
+                   players[i-1].positionRowCol = CGPoint(x: 15, y: 0)
+               } else if players[i-1].name == "Player #2" {
+                   players[i-1].positionRowCol = CGPoint(x: 0, y: 16)
+               } else if players[i-1].name == "Player #3" {
+                   players[i-1].positionRowCol = CGPoint(x: 0, y: 0)
+               } else if players[i-1].name == "Player #4" {
+                   players[i-1].positionRowCol = CGPoint(x: 15, y: 16)
+               }
+            }
+            print("\(players[i-1].name) is at start position (\(Int(players[i-1].positionRowCol.x)), \(Int(players[i-1].positionRowCol.y)))")
+            print("\(players[i-1].name) is \(players[i-1].hero.race) with \(players[i-1].hero.energy) energy, \(players[i-1].hero.lifePoitns) life points, \(players[i-1].hero.weapon!) and \(players[i-1].hero.armor!)")
        }
        
        
@@ -63,8 +93,8 @@ class Game {
                 var playerMoveIsNotFinished = true
                 repeat {
                     print("Please choose one of the following commands: ")
-                    let availableMoves = map.availableMoves(player: currentPlayer) //here
-                    var allCommands = ["move","finish", "map", "nuke"]
+                    let availableMoves = map.availableMoves(player: currentPlayer)
+                    var allCommands = ["finish", "map", "exit"]
                     if currentPlayer.isAlive {
                         allCommands.append("seppuku")
                         availableMoves.forEach { (move) in
@@ -97,56 +127,11 @@ class Game {
                                 currentPlayer.isAlive = false
                                 playerMoveIsNotFinished = false
                                 print("Your turn ended.")
-                            case "nuke":
+                            case "exit":
                                 for i in 1...players.count {
                                     players[i-1].isAlive = false
                                 }
                                 playerMoveIsNotFinished = false
-                            case "move":
-                                var playerMoveIsNotCorrect = true
-                                repeat {
-                                    print("Please choose one of the following commands: ")
-                                    let availableMoveMoves = map.availableMoves(player: currentPlayer) //here
-                                    var allMoveCommands = ["up","down", "left", "right"]
-                                    availableMoveMoves.forEach { (move) in
-                                        allMoveCommands.append(move.friendlyCommandName)
-                                    }
-                                    print("\(allMoveCommands)")
-                                    if let moveCommand = readLine(as: String.self) {
-                                        //TODO: провери дали не е от някои от възможните други действия
-                                        //TODO: ако е от тях изпълни действието
-                                        if let moveMove = availableMoveMoves.first(where: { (moveMove) -> Bool in
-                                            moveMove.friendlyCommandName == moveCommand
-                                        }) {
-                                        //разпозната команда
-                                        map.move(player: currentPlayer, move: moveMove)
-                                        playerMoveIsNotCorrect = false
-                                        } else {
-                                            //иначе, провери за
-                                            //специални команди
-                                            switch moveCommand {
-                                            case "up":
-                                                print("UP")
-                                                playerMoveIsNotCorrect = false
-                                            case "down":
-                                                print("DOWN")
-                                                playerMoveIsNotCorrect = false
-                                            case "left":
-                                                print("LEFT")
-                                                playerMoveIsNotCorrect = false
-                                            case "right":
-                                                print("RIGHT")
-                                                playerMoveIsNotCorrect = false
-                                            default:
-                                                print("Unknown command!")
-                                                playerMoveIsNotCorrect = true
-                                            }
-                                        }
-                                    }
-                                    else {
-                                        print("Invalid input! Please try again.")
-                                    }
-                                } while playerMoveIsNotCorrect
                             default:
                                 print("Unknown command!")
                             }
