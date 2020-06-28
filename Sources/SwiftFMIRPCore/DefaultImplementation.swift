@@ -1,7 +1,10 @@
+import Foundation
+
 class DefaultPlayer: Player {
     var name: String = "Default Player"
     var hero: Hero = DefaultHero()
     var isAlive: Bool  = true
+    var positionRowCol: CGPoint = CGPoint(x: 0, y: 0)
 }
 
 struct DefaultPlayerGenerator: PlayerGenerator {
@@ -139,7 +142,25 @@ class DefaultMap : Map {
     var maze: [[MapTile]]
 
     func availableMoves(player: Player) -> [PlayerMove] {
-        return []
+        var availableMoves: [PlayerMove] = [PlayerMove]()
+        //Can it go up?
+        if Int(player.positionRowCol.x) - 1 >= 0 && maze[Int(player.positionRowCol.x) - 1][Int(player.positionRowCol.y)].type != .wall {
+            availableMoves.append(StandartPlayerMove(direction: .up))
+        } 
+        //Can it go down?
+        if Int(player.positionRowCol.x) + 1 < maze.count && maze[Int(player.positionRowCol.x) + 1][Int(player.positionRowCol.y)].type != .wall {
+            availableMoves.append(StandartPlayerMove(direction: .down))
+        }
+        //Can it go left?
+        if Int(player.positionRowCol.y) - 1 >= 0 && maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y) - 1].type != .wall {
+            availableMoves.append(StandartPlayerMove(direction: .left))
+        } 
+        //Can it go right?
+        if Int(player.positionRowCol.y) + 1 < maze[0].count && maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y) + 1].type != .wall {
+            availableMoves.append(StandartPlayerMove(direction: .right))
+        }
+
+        return availableMoves
     }
 
     func move(player: Player, move: PlayerMove) {
