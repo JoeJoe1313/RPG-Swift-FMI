@@ -61,3 +61,9 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
     * добавяне на **positionRowCol**, за да можем да пазим и достъпваме позицията на играча
     
     * промяна на player параметър в move на **inout**, за да може да бъде неконстантен, тъй като искаме да сменим позицията му
+
+* **protocol Map**
+    * промяна на променлива maze от {get} на {get set}, за да можем да извършим изтриването на икона на играч, избрал seppuku
+
+* **Game.swift**
+    * промяна на map от let на var, за да можем да извършим изтриването на икона на играч, избрал seppuku
