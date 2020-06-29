@@ -110,7 +110,101 @@ class Game {
                             move.friendlyCommandName == command
                         }) {
                             //разпозната команда
+                            // clear the current player icon from the map
+                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
+
+                            // do the move
                             map.move(player: &currentPlayer, move: move)
+
+                            // if there is a bonus from a rock -> increase the attack of the current weapon
+                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .rock{
+                                currentPlayer.hero.weapon!.attack = currentPlayer.hero.weapon!.attack + 1 
+                                print("Now \(currentPlayer.name) is \(currentPlayer.hero.race) with \(currentPlayer.hero.energy) energy, \(currentPlayer.hero.lifePoitns) life points, \(currentPlayer.hero.weapon!) and \(currentPlayer.hero.armor!)")
+                            }
+
+                            // if there is a teleport 
+                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .teleport {
+                                //TODO: teleport coordinates
+                            }
+
+                            // if there is chest 
+                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .chest {
+                                let allArmors: [Armor] = [NoArmor(), LightArmor(), MediumArmor(), HeavyArmor()]
+                                let allWeapons: [Weapon] = [WoodenStick(), Axe(), Bow(), Sword()]
+
+                                let armorOrWeapon: [String] = ["armor", "weapon"]
+                                let randomChoice: String = armorOrWeapon.randomElement()!
+
+                                var theCommand: String = ""
+                                let allCommands: [String] = ["yes", "no"]
+
+                                if randomChoice == "armor" {
+                                    // let randomArmor: Armor = allArmors.randomElement()!
+                                    // if currentPlayer.hero.armor! == randomArmor {
+                                    //     print("The chest conatins the armor you already have: \(randomArmor)")
+                                    // } else {
+                                        print("The chest conatins an armor: \(randomArmor). Do you want to replace ypur \(currentPlayer.hero.armor!)?")
+                                        repeat {
+                                            print("Please choose one of the following commands:")
+                                            print("\(allCommands)")
+                                            if let playerCommand = readLine(as: String.self) {
+                                                theCommand = playerCommand
+                                                switch theCommand {
+                                                case "yes":
+                                                    print("You changed your armor to \(randomArmor)!")
+                                                    currentPlayer.hero.armor! = randomArmor
+                                                case "no":
+                                                    print("No change!")
+                                                default: 
+                                                    print("Unknown command!")
+                                                }
+                                            } else {
+                                                print("Invalid input! Please try again.") 
+                                            }
+                                        } while theCommand != "yes" && theCommand != "no"
+                                    //}
+                                }
+
+                                if randomChoice == "weapon" {
+                                    let randomWeapon: Weapon = allWeapons.randomElement()!
+                                    // if currentPlayer.hero.weapon! == randomWeapon {
+                                    //     print("The chest conatins the armor you already have: \(randomWeapon)")
+                                    // } else {
+                                        print("The chest contains a weapon: \(randomWeapon). Do you want to replace your \(currentPlayer.hero.weapon!)?")
+                                        repeat {
+                                            print("Please choose one of the following commands:")
+                                            print("\(allCommands)")
+                                            if let playerCommand = readLine(as: String.self) {
+                                                theCommand = playerCommand
+                                                switch theCommand {
+                                                case "yes":
+                                                    print("You chnaged your wepaon to \(randomWeapon)!")
+                                                    currentPlayer.hero.weapon! = randomWeapon
+                                                case "no":
+                                                    print("No change!")
+                                                default: 
+                                                    print("Unknown command!")
+                                                }
+                                            } else {
+                                                print("Invalid input! Please try again.") 
+                                            }
+                                        } while theCommand != "yes" && theCommand != "no"
+                                    //}
+                                }
+                                print("Now \(currentPlayer.name) is \(currentPlayer.hero.race) with \(currentPlayer.hero.energy) energy, \(currentPlayer.hero.lifePoitns) life points, \(currentPlayer.hero.weapon!) and \(currentPlayer.hero.armor!)")
+                            }
+
+                            // change the position of the player icon
+                            if currentPlayer.name == "Player #1" {
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player1
+                            } else if currentPlayer.name == "Player #2" {
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player2
+                            } else if currentPlayer.name == "Player #3" {
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player3
+                            } else if currentPlayer.name == "Player #4" {
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player4
+                            }
+
                         } else {
                             //иначе, провери за
                             //специални команди

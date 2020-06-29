@@ -168,7 +168,6 @@ class DefaultMap : Map {
         player.hero.energy = player.hero.energy - 1
 
         // move
-        maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .empty
         // go up
         if move.direction == .up {
             player.positionRowCol.x = player.positionRowCol.x - 1
@@ -185,17 +184,6 @@ class DefaultMap : Map {
         if move.direction == .right {
             player.positionRowCol.y = player.positionRowCol.y + 1
         }
-
-        // change the position of the player icon
-        if player.name == "Player #1" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player1
-            } else if player.name == "Player #2" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player2
-            } else if player.name == "Player #3" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player3
-            } else if player.name == "Player #4" {
-                maze[Int(player.positionRowCol.x)][Int(player.positionRowCol.y)].type = .player4
-            }
     }
     
 }
@@ -206,12 +194,12 @@ class DefaultFightGenerator : FightGenerator {
 
 class DefaultEquipmentGenerator : EquipmentGenerator {
     var allArmors: [Armor]
-    
+
     var allWeapons: [Weapon]
     
     init() {
-        allArmors = [NoArmor()]
-        allWeapons = [WoodenStick()]
+       allArmors = [NoArmor(), LightArmor(), MediumArmor(), HeavyArmor()]
+       allWeapons = [WoodenStick(), Axe(), Bow(), Sword()]
     }
 }
 
@@ -260,13 +248,13 @@ class DefaultMapRenderer: MapRenderer {
     private func renderMapLegend() {
         print("\n")
         print("📦 - Treasure Chest: contains weapon or armor")
-        print("🗿 - Rock: opens the chest")
+        print("🗿 - Rock: gives bonus attack 1")
         print("💿 - Teleport: teleports you from one teleport to another")
         print("🧱 - Wall: players cannot move to a wall tile")
-        print("💥 - Clash: shows when two players are on the same tile")
-        print("1️⃣ - Player 1")
-        print("2️⃣ - Player 2")
-        print("3️⃣ - Player 3")
-        print("4️⃣ - Player 4")
+        print("💥 - Clash: shows when two or more players are on the same tile")
+        print("1️⃣  - Player 1")
+        print("2️⃣  - Player 2")
+        print("3️⃣  - Player 3")
+        print("4️⃣  - Player 4")
     }
 }
