@@ -139,10 +139,10 @@ class Game {
                                 let allCommands: [String] = ["yes", "no"]
 
                                 if randomChoice == "armor" {
-                                    // let randomArmor: Armor = allArmors.randomElement()!
-                                    // if currentPlayer.hero.armor! == randomArmor {
-                                    //     print("The chest conatins the armor you already have: \(randomArmor)")
-                                    // } else {
+                                    let randomArmor: Armor = allArmors.randomElement()!
+                                    if currentPlayer.hero.armor! == randomArmor {
+                                        print("The chest conatins the armor you already have: \(randomArmor)")
+                                    } else {
                                         print("The chest conatins an armor: \(randomArmor). Do you want to replace ypur \(currentPlayer.hero.armor!)?")
                                         repeat {
                                             print("Please choose one of the following commands:")
@@ -162,14 +162,14 @@ class Game {
                                                 print("Invalid input! Please try again.") 
                                             }
                                         } while theCommand != "yes" && theCommand != "no"
-                                    //}
+                                    }
                                 }
 
                                 if randomChoice == "weapon" {
                                     let randomWeapon: Weapon = allWeapons.randomElement()!
-                                    // if currentPlayer.hero.weapon! == randomWeapon {
-                                    //     print("The chest conatins the armor you already have: \(randomWeapon)")
-                                    // } else {
+                                    if currentPlayer.hero.weapon! == randomWeapon {
+                                        print("The chest conatins the armor you already have: \(randomWeapon)")
+                                    } else {
                                         print("The chest contains a weapon: \(randomWeapon). Do you want to replace your \(currentPlayer.hero.weapon!)?")
                                         repeat {
                                             print("Please choose one of the following commands:")
@@ -189,7 +189,7 @@ class Game {
                                                 print("Invalid input! Please try again.") 
                                             }
                                         } while theCommand != "yes" && theCommand != "no"
-                                    //}
+                                    }
                                 }
                                 print("Now \(currentPlayer.name) is \(currentPlayer.hero.race) with \(currentPlayer.hero.energy) energy, \(currentPlayer.hero.lifePoitns) life points, \(currentPlayer.hero.weapon!) and \(currentPlayer.hero.armor!)")
                             }
