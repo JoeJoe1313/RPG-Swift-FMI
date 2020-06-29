@@ -1,6 +1,36 @@
-protocol Weapon {
-    var attack: Int {get}
+protocol Weapon: Equatable {
+    func isEqualTo(_ other: Weapon) -> Bool
+    var attack: Int {get set}
     var defence: Int {get}
+}
+
+extension Weapon where Self: Equatable {
+    func isEqualTo(_ other: Weapon) -> Bool {
+        guard let otherWeapon = other as? Self else { return false }
+        return self == otherWeapon
+    }
+}
+
+struct AnyEquatableWeapon: Weapon {
+    init(_ weapon: Weapon) {
+        self.weapon = weapon
+    }
+    
+    var attack: Int {
+        return weapon.attack
+    }
+    
+    var defence: Int {
+        return weapon.defence
+    }
+    
+    private let weapon: Weapon
+}
+
+extension AnyEquatableWeapon: Equatable {
+    static func ==(lhs: AnyEquatableWeapon, rhs: AnyEquatableWeapon) -> Bool {
+        return lhs.weapon.isEqualTo(rhs.weapon)
+    }
 }
 
 struct WoodenStick: Weapon {
