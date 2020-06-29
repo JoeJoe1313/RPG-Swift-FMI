@@ -66,4 +66,8 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
     * промяна на променлива maze от {get} на **{get set}**, за да можем да извършим изтриването на икона на играч, избрал seppuku
 
 * **Game.swift**
+    * добавяне на команда **exit** за излизане от играта
     * промяна на map от let на **var**, за да можем да извършим изтриването на икона на играч, избрал seppuku
+
+* **protocol Weapon**
+    * промяна на променливата attack от {get} на {get set}, за да можем да извършим добавяне на бонус атака, идващ от rock
