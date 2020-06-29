@@ -72,7 +72,7 @@ class Game {
        
        
 
-        let map = mapGenerator.generate(players: players)
+        var map = mapGenerator.generate(players: players)
         // 1. Избор на брой играчи. Минимум 2 броя.
         // 1. Генериране на карта с определени брой размери на базата на броя играчи.
         // 1. Докато има повече от един оцелял играч, изпълнявай ходове.
@@ -123,6 +123,7 @@ class Game {
                                 mapRenderer.render(map: map)
                             case "seppuku":
                                 print("Ritual suicide...")
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
                                 currentPlayer.isAlive = false
                                 playerMoveIsNotFinished = false
                                 print("Your turn ended.")
