@@ -34,45 +34,29 @@ class Game {
 
         // 1. Избор на брой играчи. Минимум 2 броя.
         
-       print("You chose \(totalPlayers) players. The system will select your heroes.")
-       for i in 1...totalPlayers {
-           print("Generating player...")
-           players.append(playerGenerator.generatePlayer(name: "Player #\(i)"))
-           //this is just a try!!!
-           //These are the fixed base points for the players ate the beginning of every game depending on the map
-           if totalPlayers == 2 {
-               if players[i-1].name == "Player #1" {
-                   players[i-1].positionRowCol = CGPoint(x: 9, y: 0)
-               } else if players[i-1].name == "Player #2" {
-                   players[i-1].positionRowCol = CGPoint(x: 0, y: 10)
-               }
-            } else if totalPlayers == 3 {
-               if players[i-1].name == "Player #1" {
-                   players[i-1].positionRowCol = CGPoint(x: 12, y: 0)
-               } else if players[i-1].name == "Player #2" {
-                   players[i-1].positionRowCol = CGPoint(x: 0, y: 13)
-               } else if players[i-1].name == "Player #3" {
-                   players[i-1].positionRowCol = CGPoint(x: 0, y: 0)
-               }
-            } else if totalPlayers == 4 {
-                if players[i-1].name == "Player #1" {
-                   players[i-1].positionRowCol = CGPoint(x: 15, y: 0)
-               } else if players[i-1].name == "Player #2" {
-                   players[i-1].positionRowCol = CGPoint(x: 0, y: 16)
-               } else if players[i-1].name == "Player #3" {
-                   players[i-1].positionRowCol = CGPoint(x: 0, y: 0)
-               } else if players[i-1].name == "Player #4" {
-                   players[i-1].positionRowCol = CGPoint(x: 15, y: 16)
-               }
-            }
-            print("\(players[i-1].name) is at start position (\(Int(players[i-1].positionRowCol.x)), \(Int(players[i-1].positionRowCol.y)))")
-            print("\(players[i-1].name) is \(players[i-1].hero.race) with \(players[i-1].hero.energy) energy, \(players[i-1].hero.lifePoitns) life points, \(players[i-1].hero.weapon!) and \(players[i-1].hero.armor!)")
-       }
-       
-       
-       
-
+        print("You chose \(totalPlayers) players. The system will select your heroes.")
+        for i in 1...totalPlayers {
+            print("Generating player...")
+            players.append(playerGenerator.generatePlayer(name: "Player #\(i)")) 
+            print("\(players[i-1].name) is \(players[i-1].hero.race) with \(players[i-1].hero.energy) energy, \(players[i-1].hero.lifePoitns) life points, \(players[i-1].hero.weapon!) and \(players[i-1].hero.armor!)\n")
+        }
+        
         var map = mapGenerator.generate(players: players)
+
+        for row in 0..<map.maze.count {
+            for col in 0..<map.maze[0].count {
+                if map.maze[row][col].type == .player1 {
+                    players[0].positionRowCol = CGPoint(x: row,y: col)
+                } else if map.maze[row][col].type == .player2 {
+                    players[1].positionRowCol = CGPoint(x: row, y: col)
+                } else if map.maze[row][col].type == .player3 {
+                    players[2].positionRowCol = CGPoint(x: row, y: col)
+                } else if map.maze[row][col].type == .player4 {
+                    players[3].positionRowCol = CGPoint(x: row, y: col)
+                }
+            }
+        }
+
         // 1. Избор на брой играчи. Минимум 2 броя.
         // 1. Генериране на карта с определени брой размери на базата на броя играчи.
         // 1. Докато има повече от един оцелял играч, изпълнявай ходове.
@@ -111,7 +95,9 @@ class Game {
                         }) {
                             //разпозната команда
                             // clear the current player icon from the map
-                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
+                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .teleport {
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
+                            } 
 
                             // do the move
                             map.move(player: &currentPlayer, move: move)
@@ -125,6 +111,42 @@ class Game {
                             // if there is a teleport 
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .teleport {
                                 //TODO: teleport coordinates
+                                var teleportIndex: Int = 0
+                                var teleportCommands: [Int] = []
+                                var teleportCoordinates: [(Int,Int)] = []
+                                var theTeleportCommand: Int = 0
+
+                                for row in 0..<map.maze.count {
+                                    for col in 0..<map.maze[0].count {
+                                        if map.maze[row][col].type == .teleport {
+                                            teleportIndex += 1
+                                            print("Teleport #\(teleportIndex) has coordinates (\(row),\(col)).")
+                                            teleportCoordinates.append((row,col))
+                                            teleportCommands.append(teleportIndex)
+                                        }
+                                    }
+                                }
+
+                                repeat {
+                                    print("Which number teleport do you choose to go to?")
+                                    print("Please choose the number of the teleport you want to go to (1-\(teleportIndex))")
+                                    print("\(teleportCommands)")
+                                    if let playerCommand = readLine(as: Int.self) {
+                                        theTeleportCommand = playerCommand
+                                        if theTeleportCommand < 1 || theTeleportCommand > teleportIndex {
+                                            print("Invalid number of a teleport! Please try again.")
+                                        } else {
+                                            for i in 1...teleportIndex {
+                                                if theTeleportCommand == i {
+                                                    currentPlayer.positionRowCol = CGPoint(x: teleportCoordinates[i-1].0, y: teleportCoordinates[i-1].1)
+                                                    print("You chose Teleport #\(i) and now \(currentPlayer.name) is at (\(Int(currentPlayer.positionRowCol.x)),\(Int(currentPlayer.positionRowCol.y)))!")
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        print("Invalid input! Please try again.") 
+                                    }
+                                } while theTeleportCommand < 1 || theTeleportCommand > teleportIndex
                             }
 
                             // if there is chest 
@@ -195,15 +217,17 @@ class Game {
                             }
 
                             // change the position of the player icon
-                            if currentPlayer.name == "Player #1" {
-                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player1
-                            } else if currentPlayer.name == "Player #2" {
-                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player2
-                            } else if currentPlayer.name == "Player #3" {
-                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player3
-                            } else if currentPlayer.name == "Player #4" {
-                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player4
-                            }
+                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .teleport {
+                                if currentPlayer.name == "Player #1" {
+                                    map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player1
+                                } else if currentPlayer.name == "Player #2" {
+                                    map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player2
+                                } else if currentPlayer.name == "Player #3" {
+                                    map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player3
+                                } else if currentPlayer.name == "Player #4" {
+                                    map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player4
+                                }
+                            } // how to show player on top of teleport or sth?
 
                         } else {
                             //иначе, провери за
