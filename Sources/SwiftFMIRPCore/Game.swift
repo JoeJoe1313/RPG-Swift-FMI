@@ -77,6 +77,7 @@ class Game {
                 
                 ///команди от играча
                 var playerMoveIsNotFinished = true
+                currentPlayer.hero.energy = maxEnergy
                 repeat {
                     print("Please choose one of the following commands: ")
                     let availableMoves = map.availableMoves(player: currentPlayer)
