@@ -66,7 +66,6 @@ enum MapTileType {
     case wall
     case teleport
     case rock
-    case clash 
     case player1
     case player2
     case player3

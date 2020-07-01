@@ -226,8 +226,6 @@ class DefaultMapRenderer: MapRenderer {
                 r += "  "
             case .wall:
                 r += "🧱"
-            case .clash:
-                r += "💥"
             case .player1:
                 r += "1️⃣ "
             case .player2:
@@ -251,7 +249,6 @@ class DefaultMapRenderer: MapRenderer {
         print("🗿 - Rock: gives bonus attack 1")
         print("💿 - Teleport: teleports you from one teleport to another")
         print("🧱 - Wall: players cannot move to a wall tile")
-        print("💥 - Clash: shows when two or more players are on the same tile")
         print("1️⃣  - Player 1")
         print("2️⃣  - Player 2")
         print("3️⃣  - Player 3")
