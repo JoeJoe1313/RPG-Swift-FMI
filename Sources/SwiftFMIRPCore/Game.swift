@@ -96,7 +96,24 @@ class Game {
                             //разпозната команда
                             // clear the current player icon from the map
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .teleport {
-                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
+                                var newTileValue: MapTileType = .empty
+                                for i in 1...totalPlayers {
+                                    if players[i-1].name != currentPlayer.name {
+                                        if currentPlayer.positionRowCol.x == players[i-1].positionRowCol.x && 
+                                            currentPlayer.positionRowCol.y == players[i-1].positionRowCol.y {
+                                            if players[i-1].name == "Player #1" {
+                                                newTileValue = .player1
+                                            } else if players[i-1].name == "Player #2" {
+                                                newTileValue = .player2
+                                            } else if players[i-1].name == "Player #3" {
+                                                newTileValue = .player3
+                                            } else if players[i-1].name == "Player #4" {
+                                                newTileValue = .player4
+                                            }
+                                        }
+                                    }
+                                }
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = newTileValue
                             } 
 
                             // do the move
