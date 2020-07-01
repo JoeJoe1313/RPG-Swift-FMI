@@ -43,6 +43,7 @@ class Game {
         
         var map = mapGenerator.generate(players: players)
 
+        // finding the start positions of the players
         for row in 0..<map.maze.count {
             for col in 0..<map.maze[0].count {
                 if map.maze[row][col].type == .player1 {
@@ -75,6 +76,7 @@ class Game {
                 
                 ///команди от играча
                 var playerMoveIsNotFinished = true
+                var br: Int = 0
                 repeat {
                     print("Please choose one of the following commands: ")
                     let availableMoves = map.availableMoves(player: currentPlayer)
@@ -94,15 +96,46 @@ class Game {
                             move.friendlyCommandName == command
                         }) {
                             //разпозната команда
+                            // po-skoro ot imeto pak
+                            //var br: Int = 0
+                            if br == 0 {
+                                // print("HELLOOOOOO")
+                            //}
+
                             // clear the current player icon from the map
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .teleport {
-                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
-                            } 
+                                if currentPlayer.name == "Player #1" && 
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player2 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player3 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player4 {
+                                    map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
+                                } else if currentPlayer.name == "Player #2" &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player1 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player3 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player4 {
+                                    map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty   
+                                } else if currentPlayer.name == "Player #3" && 
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player1 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player2 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player4 {
+                                    map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
+                                } else if currentPlayer.name == "Player #4" && 
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player1 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player2 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player3 {
+                                    map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
+                                }
+                            }  
+                            }
 
                             // do the move
                             map.move(player: &currentPlayer, move: move)
 
-                            // if there is a bonus from a rock -> increase the attack of the current weapon
+                            if br != 0 {
+                                
+                            }
+
+                            // if there is a bonus from a rock -> increase the attack of the current weapon with 1
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .rock{
                                 currentPlayer.hero.weapon!.attack = currentPlayer.hero.weapon!.attack + 1 
                                 print("Now \(currentPlayer.name) is \(currentPlayer.hero.race) with \(currentPlayer.hero.energy) energy, \(currentPlayer.hero.lifePoitns) life points, \(currentPlayer.hero.weapon!) and \(currentPlayer.hero.armor!)")
@@ -215,19 +248,52 @@ class Game {
                                 }
                                 print("Now \(currentPlayer.name) is \(currentPlayer.hero.race) with \(currentPlayer.hero.energy) energy, \(currentPlayer.hero.lifePoitns) life points, \(currentPlayer.hero.weapon!) and \(currentPlayer.hero.armor!)")
                             }
+                            
+                            // what happens if there are other players on the tile?
+                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player1 ||
+                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player2 ||
+                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player3 ||
+                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player4 {
+                                // first the position things
+                                
+                                // then fights and things
+                            }
+
+                            br = 0
+                            for i in 1...totalPlayers {
+                                if players[i-1].name != currentPlayer.name {
+                                    if currentPlayer.positionRowCol.x == players[i-1].positionRowCol.x && 
+                                    currentPlayer.positionRowCol.y == players[i-1].positionRowCol.y {
+                                        br += 1
+                                    }
+                                }
+                            }
+                            print("my count \(br)")
 
                             // change the position of the player icon
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .teleport {
-                                if currentPlayer.name == "Player #1" {
+                                if currentPlayer.name == "Player #1" &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player2 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player3 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player4 {
                                     map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player1
-                                } else if currentPlayer.name == "Player #2" {
+                                } else if currentPlayer.name == "Player #2" &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player1 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player3 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player4 {
                                     map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player2
-                                } else if currentPlayer.name == "Player #3" {
+                                } else if currentPlayer.name == "Player #3" && 
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player1 && 
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player2 &&
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player4 {
                                     map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player3
-                                } else if currentPlayer.name == "Player #4" {
+                                } else if currentPlayer.name == "Player #4" && 
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player1 && 
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player2 && 
+                                map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .player3 {
                                     map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player4
                                 }
-                            } // how to show player on top of teleport or sth?
+                            }
 
                         } else {
                             //иначе, провери за
@@ -239,6 +305,9 @@ class Game {
                             case "map":
                                 print("Printing map:")
                                 mapRenderer.render(map: map)
+                                for i in 1...totalPlayers {
+                                    print("\(players[i-1].name) is on tile (\(Int(players[i-1].positionRowCol.x)),\(Int(players[i-1].positionRowCol.y)))!")
+                                }
                             case "seppuku":
                                 print("Ritual suicide...")
                                 map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .empty
