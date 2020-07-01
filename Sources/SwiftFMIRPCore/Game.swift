@@ -237,6 +237,93 @@ class Game {
                             }
                             
                             // if there is another player on the tile
+                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player1 ||
+                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player2 || 
+                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player3 || 
+                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player4 {
+                                var playersOnTile: [Player] = []
+                                var playersIndex: Int = 0
+                                var playersCommands: [Int] = []
+                                var thePlayersCommand: Int = 0
+                                var playerYesNo: String = ""
+                                let allCommands: [String] = ["yes", "no"]
+                                //var teleportCoordinates: [(Int,Int)] = []
+                                
+                                print("On this tile there are already other players!")
+                                for i in 1...totalPlayers {
+                                    if players[i-1].name != currentPlayer.name {
+                                        if currentPlayer.positionRowCol.x == players[i-1].positionRowCol.x && 
+                                        currentPlayer.positionRowCol.y == players[i-1].positionRowCol.y {
+                                            playersIndex += 1
+                                            playersOnTile.append(players[i-1])
+                                            playersCommands.append(i)
+                                            print("\(players[i-1].name) is on the tile!")
+                                        }
+                                    }
+                                }       
+
+                                if playersIndex == 1 {
+                                    print("Do you want to attack Player #\(playersCommands[0])?")
+                                    repeat {
+                                            print("Please choose one of the following commands:")
+                                            print("\(allCommands)")
+                                            if let playerCommand = readLine(as: String.self) {
+                                                playerYesNo = playerCommand
+                                                switch playerYesNo {
+                                                case "yes":
+                                                    print("You chose to attack Player #\(playersCommands[0])!")
+                                                    // insert the fight module here
+                                                case "no":
+                                                    print("You chose not to attack Player #\(playersCommands[0])!")
+                                                    // do nothing
+                                                default: 
+                                                    print("Unknown command!")
+                                                }
+                                            } else {
+                                                print("Invalid input! Please try again.") 
+                                            }
+                                        } while playerYesNo != "yes" && playerYesNo != "no"
+                                } else if playersIndex > 1 {
+                                    print("Do you want to attack someone?")
+                                    repeat {
+                                        print("Please choose one of the following commands:")
+                                        print("\(allCommands)")
+                                        if let playerCommand = readLine(as: String.self) {
+                                            playerYesNo = playerCommand
+                                            switch playerYesNo {
+                                            case "yes":
+                                                print("Which player do you want to attack?")
+                                                repeat {
+                                                    print("Please choose the player you want to attack:")
+                                                    print("\(playersCommands)")
+                                                    if let playerNewCommand = readLine(as: Int.self) {
+                                                        thePlayersCommand = playerNewCommand
+                                                        if thePlayersCommand < 1 || thePlayersCommand > playersIndex {
+                                                            print("Invalid choice of player! Please try again.")
+                                                        } else {
+                                                            for i in 1...playersIndex {
+                                                                if thePlayersCommand == i {
+                                                                    print("You chose to attack \(playersCommands[i-1])!")
+                                                                }
+                                                            }
+                                                            // insert the fight module
+                                                        }
+                                                    } else {
+                                                        print("Invalid input! Please try again.") 
+                                                    }
+                                                } while thePlayersCommand < 1 || thePlayersCommand > playersIndex
+                                            case "no":
+                                                print("You chose not to attack!")
+                                                // do nothing
+                                            default: 
+                                                print("Unknown command!")
+                                            }
+                                        } else {
+                                            print("Invalid input! Please try again.") 
+                                        }
+                                    } while playerYesNo != "yes" && playerYesNo != "no"
+                                }
+                            }
 
                             // change the position of the player icon
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .teleport {
