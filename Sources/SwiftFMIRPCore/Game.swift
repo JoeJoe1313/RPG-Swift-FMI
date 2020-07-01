@@ -1,5 +1,7 @@
 import Foundation
 
+var maxEnergy: Int = 5
+
 func readLine<T: LosslessStringConvertible>(as type: T.Type) -> T? {
   return readLine().flatMap(type.init(_:))
 }
@@ -232,6 +234,8 @@ class Game {
                                 }
                                 print("Now \(currentPlayer.name) is \(currentPlayer.hero.race) with \(currentPlayer.hero.energy) energy, \(currentPlayer.hero.lifePoitns) life points, \(currentPlayer.hero.weapon!) and \(currentPlayer.hero.armor!)")
                             }
+                            
+                            // if there is another player on the tile
 
                             // change the position of the player icon
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .teleport {
@@ -244,7 +248,12 @@ class Game {
                                 } else if currentPlayer.name == "Player #4" {
                                     map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type = .player4
                                 }
-                            } // how to show player on top of teleport or sth?
+                            }
+                            
+                            if currentPlayer.hero.energy == 0 {
+                                print("\(currentPlayer.name) ran out of energy! The turn has finished!")
+                                playerMoveIsNotFinished = false
+                            }
 
                         } else {
                             //иначе, провери за

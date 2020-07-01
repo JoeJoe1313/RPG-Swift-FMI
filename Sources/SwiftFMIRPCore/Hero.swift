@@ -32,7 +32,7 @@ protocol EquipmentGenerator {
 struct DefaultHero: Hero {
    var race: String  = "Random Race"
 
-    var energy: Int = 5
+    var energy: Int = maxEnergy
     var lifePoitns: Int = 7
 
     var weapon: Weapon?  = nil
@@ -43,7 +43,7 @@ struct DefaultHero: Hero {
 struct Elf: Hero {
     var race: String  = "Elf"
 
-    var energy: Int = 8
+    var energy: Int = maxEnergy
     var lifePoitns: Int = 10
 
     var weapon: Weapon?  = Bow()
@@ -53,7 +53,7 @@ struct Elf: Hero {
 struct Orc: Hero {
     var race: String = "Orc"
 
-    var energy: Int = 8
+    var energy: Int = maxEnergy
     var lifePoitns: Int = 10
 
     var weapon: Weapon? = Axe()
@@ -63,7 +63,7 @@ struct Orc: Hero {
 struct Human: Hero {
     var race: String = "Human"
 
-    var energy: Int = 8
+    var energy: Int = maxEnergy
     var lifePoitns: Int = 10
 
     var weapon: Weapon? = Sword()
@@ -73,7 +73,7 @@ struct Human: Hero {
 struct Goblin: Hero {
     var race: String = "Goblin"
 
-    var energy: Int = 8
+    var energy: Int = maxEnergy
     var lifePoitns: Int = 10
 
     var weapon: Weapon? = WoodenStick()
