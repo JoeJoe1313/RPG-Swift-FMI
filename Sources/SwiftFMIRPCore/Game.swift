@@ -88,6 +88,20 @@ class Game {
                             allCommands.append(move.friendlyCommandName)
                         }
                     }
+
+                    if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .teleport {
+                        allCommands.append("teleport")
+                    }
+
+                    for i in 1...totalPlayers {
+                        if players[i-1].name != currentPlayer.name {
+                            if players[i-1].positionRowCol.x == currentPlayer.positionRowCol.x &&
+                            players[i-1].positionRowCol.y == currentPlayer.positionRowCol.y {
+                                allCommands.append("fight")
+                            }
+                        }
+                    }
+
                     print("\(allCommands)")
                     
                     if let command = readLine(as: String.self) {
@@ -128,52 +142,8 @@ class Game {
                                 print("Now \(currentPlayer.name) is \(currentPlayer.hero.race) with \(currentPlayer.hero.energy) energy, \(currentPlayer.hero.lifePoitns) life points, \(currentPlayer.hero.weapon!) and \(currentPlayer.hero.armor!)")
                             }
 
-                            // if there is a teleport 
-                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .teleport {
-                                //TODO: teleport coordinates
-                                var teleportIndex: Int = 0
-                                var teleportCommands: [Int] = []
-                                var teleportCoordinates: [(Int,Int)] = []
-                                var theTeleportCommand: Int = 0
-
-                                for row in 0..<map.maze.count {
-                                    for col in 0..<map.maze[0].count {
-                                        if map.maze[row][col].type == .teleport {
-                                            teleportIndex += 1
-                                            print("Teleport #\(teleportIndex) has coordinates (\(row),\(col)).")
-                                            teleportCoordinates.append((row,col))
-                                            teleportCommands.append(teleportIndex)
-                                        }
-                                    }
-                                }
-
-                                repeat {
-                                    print("Which number teleport do you choose to go to?")
-                                    print("Please choose the number of the teleport you want to go to (1-\(teleportIndex))")
-                                    print("\(teleportCommands)")
-                                    if let playerCommand = readLine(as: Int.self) {
-                                        theTeleportCommand = playerCommand
-                                        if theTeleportCommand < 1 || theTeleportCommand > teleportIndex {
-                                            print("Invalid number of a teleport! Please try again.")
-                                        } else {
-                                            for i in 1...teleportIndex {
-                                                if theTeleportCommand == i {
-                                                    currentPlayer.positionRowCol = CGPoint(x: teleportCoordinates[i-1].0, y: teleportCoordinates[i-1].1)
-                                                    print("You chose Teleport #\(i) and now \(currentPlayer.name) is at (\(Int(currentPlayer.positionRowCol.x)),\(Int(currentPlayer.positionRowCol.y)))!")
-                                                }
-                                            }
-                                        }
-                                    } else {
-                                        print("Invalid input! Please try again.") 
-                                    }
-                                } while theTeleportCommand < 1 || theTeleportCommand > teleportIndex
-                            }
-
                             // if there is chest 
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .chest {
-                                let allArmors: [Armor] = [NoArmor(), LightArmor(), MediumArmor(), HeavyArmor()]
-                                let allWeapons: [Weapon] = [WoodenStick(), Axe(), Bow(), Sword()]
-
                                 let armorOrWeapon: [String] = ["armor", "weapon"]
                                 let randomChoice: String = armorOrWeapon.randomElement()!
 
@@ -181,7 +151,7 @@ class Game {
                                 let allCommands: [String] = ["yes", "no"]
 
                                 if randomChoice == "armor" {
-                                    let randomArmor: Armor = allArmors.randomElement()!
+                                    let randomArmor: Armor = DefaultEquipmentGenerator().randomArmor()
                                     if currentPlayer.hero.armor! == randomArmor {
                                         print("The chest conatins the armor you already have: \(randomArmor)")
                                     } else {
@@ -208,7 +178,7 @@ class Game {
                                 }
 
                                 if randomChoice == "weapon" {
-                                    let randomWeapon: Weapon = allWeapons.randomElement()!
+                                    let randomWeapon: Weapon = DefaultEquipmentGenerator().randomWeapon()
                                     if currentPlayer.hero.weapon! == randomWeapon {
                                         print("The chest conatins the armor you already have: \(randomWeapon)")
                                     } else {
@@ -235,77 +205,6 @@ class Game {
                                 }
                                 print("Now \(currentPlayer.name) is \(currentPlayer.hero.race) with \(currentPlayer.hero.energy) energy, \(currentPlayer.hero.lifePoitns) life points, \(currentPlayer.hero.weapon!) and \(currentPlayer.hero.armor!)")
                             }
-                            
-                            // if there is another player on the tile
-                            var playersIndex: [Int] = []
-                            var thePlayersCommand: Int = 0
-                            var isAmongIndices: Bool = false
-                            var playerYesNo: String = ""
-                            let allCommands: [String] = ["yes", "no"]
-                                
-                            print("On this tile there are already other players!")
-                            for i in 1...totalPlayers {
-                                if players[i-1].name != currentPlayer.name {
-                                    if currentPlayer.positionRowCol.x == players[i-1].positionRowCol.x && 
-                                    currentPlayer.positionRowCol.y == players[i-1].positionRowCol.y {
-                                        playersIndex.append(i)
-                                        print("\(players[i-1].name) is on the tile!")
-                                    }
-                                }
-                            }       
-
-                            if playersIndex.isEmpty == false {
-                                print("Do you want to attack someone?")
-                                repeat {
-                                    print("Please choose one of the following commands:")
-                                    print("\(allCommands)")
-                                    if let playerCommand = readLine(as: String.self) {
-                                        playerYesNo = playerCommand
-                                        switch playerYesNo {
-                                        case "yes":
-                                            // first decrease energy or move it to the fight module!
-                                            currentPlayer.hero.energy -= 1
-
-                                            print("Which player do you want to attack?")
-                                            repeat {
-                                                print("Please choose the player you want to attack:")
-                                                print("\(playersIndex)")
-                                                if let playerNewCommand = readLine(as: Int.self) {
-                                                    thePlayersCommand = playerNewCommand
-                                                    if playersIndex.contains(thePlayersCommand) {
-                                                        isAmongIndices = true
-                                                        for i in 1...totalPlayers {
-                                                            if thePlayersCommand == i {
-                                                                if String(players[i-1].name.last!) == "\(i)" {
-                                                                    print("You chose to attack \(players[i-1].name)!")
-                                                                }
-                                                            }
-                                                        }
-                                                    } else {
-                                                        isAmongIndices = false
-                                                        print("Invalid choice of player! Please try again.")
-                                                    }
-                                                } else {
-                                                    print("Invalid input! Please try again.") 
-                                                }
-                                            } while isAmongIndices != true
-                                            //////////////////////////////////
-                                            // insert the fight module here //
-                                            //////////////////////////////////
-                                        case "no":
-                                            print("You chose not to attack!")
-                                            // do nothing
-                                        default: 
-                                            print("Unknown command!")
-                                        }
-                                    } else {
-                                        print("Invalid input! Please try again.") 
-                                    }
-                                } while playerYesNo != "yes" && playerYesNo != "no"
-                            }
-                            ///////////////////////////////////////////////////////////////////////////////////////////////////////
-                            // what happens if the player hasn't already made a move but is on a tile with other players already //
-                            ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
                             // change the position of the player icon
                             if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type != .teleport {
@@ -346,6 +245,111 @@ class Game {
                                     players[i-1].isAlive = false
                                 }
                                 playerMoveIsNotFinished = false
+                            case "teleport":
+                                if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .teleport {
+                                    var teleportIndex: Int = 0
+                                    var teleportCommands: [Int] = []
+                                    var teleportCoordinates: [(Int,Int)] = []
+                                    var theTeleportCommand: Int = 0
+
+                                    for row in 0..<map.maze.count {
+                                        for col in 0..<map.maze[0].count {
+                                            if map.maze[row][col].type == .teleport {
+                                                teleportIndex += 1
+                                                print("Teleport #\(teleportIndex) has coordinates (\(row),\(col)).")
+                                                teleportCoordinates.append((row,col))
+                                                teleportCommands.append(teleportIndex)
+                                            }
+                                        }
+                                    }
+                                    repeat {
+                                        print("Which number teleport do you choose to go to?")
+                                        print("Please choose the number of the teleport you want to go to (1-\(teleportIndex))")
+                                        print("\(teleportCommands)")
+                                        if let playerCommand = readLine(as: Int.self) {
+                                            theTeleportCommand = playerCommand
+                                            if theTeleportCommand < 1 || theTeleportCommand > teleportIndex {
+                                                print("Invalid number of a teleport! Please try again.")
+                                            } else {
+                                                for i in 1...teleportIndex {
+                                                    if theTeleportCommand == i {
+                                                        currentPlayer.positionRowCol = CGPoint(x: teleportCoordinates[i-1].0, y: teleportCoordinates[i-1].1)
+                                                        print("You chose Teleport #\(i) and now \(currentPlayer.name) is at (\(Int(currentPlayer.positionRowCol.x)),\(Int(currentPlayer.positionRowCol.y)))!")
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            print("Invalid input! Please try again.") 
+                                        }
+                                    } while theTeleportCommand < 1 || theTeleportCommand > teleportIndex
+                                }
+                            case "fight":
+                                // if there is another player on the tile
+                                var playersIndex: [Int] = []
+                                var thePlayersCommand: Int = 0
+                                var isAmongIndices: Bool = false
+                                var playerYesNo: String = ""
+                                let allCommands: [String] = ["yes", "no"]
+                                
+                                for i in 1...totalPlayers {
+                                    if players[i-1].name != currentPlayer.name {
+                                        if currentPlayer.positionRowCol.x == players[i-1].positionRowCol.x && 
+                                        currentPlayer.positionRowCol.y == players[i-1].positionRowCol.y {
+                                            playersIndex.append(i)
+                                            print("\(players[i-1].name) is on the tile!")
+                                        }
+                                    }
+                                }       
+
+                                if playersIndex.isEmpty == false {
+                                    print("Do you want to attack someone?")
+                                    repeat {
+                                        print("Please choose one of the following commands:")
+                                        print("\(allCommands)")
+                                        if let playerCommand = readLine(as: String.self) {
+                                            playerYesNo = playerCommand
+                                            switch playerYesNo {
+                                            case "yes":
+                                                // first decrease energy or move it to the fight module!
+                                                currentPlayer.hero.energy -= 1
+
+                                                print("Which player do you want to attack?")
+                                                repeat {
+                                                    print("Please choose the player you want to attack:")
+                                                    print("\(playersIndex)")
+                                                    if let playerNewCommand = readLine(as: Int.self) {
+                                                        thePlayersCommand = playerNewCommand
+                                                        if playersIndex.contains(thePlayersCommand) {
+                                                            isAmongIndices = true
+                                                            for i in 1...totalPlayers {
+                                                                if thePlayersCommand == i {
+                                                                    if String(players[i-1].name.last!) == "\(i)" {
+                                                                        print("You chose to attack \(players[i-1].name)!")
+                                                                    }
+                                                                }
+                                                            }
+                                                        } else {
+                                                            isAmongIndices = false
+                                                            print("Invalid choice of player! Please try again.")
+                                                        }
+                                                    } else {
+                                                        print("Invalid input! Please try again.") 
+                                                    }
+                                                } while isAmongIndices != true
+                                                //////////////////////////////////
+                                                // insert the fight module here //
+                                                //////////////////////////////////
+                                            case "no":
+                                                print("You chose not to attack!")
+                                                // do nothing
+                                            default: 
+                                                print("Unknown command!")
+                                            }
+                                        } else {
+                                            print("Invalid input! Please try again.") 
+                                        }
+                                    } while playerYesNo != "yes" && playerYesNo != "no"
+                                }
                             default:
                                 print("Unknown command!")
                             }
