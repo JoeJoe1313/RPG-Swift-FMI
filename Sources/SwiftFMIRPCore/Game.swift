@@ -237,29 +237,24 @@ class Game {
                             }
                             
                             // if there is another player on the tile
-                            if map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player1 ||
-                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player2 || 
-                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player3 || 
-                            map.maze[Int(currentPlayer.positionRowCol.x)][Int(currentPlayer.positionRowCol.y)].type == .player4 {
+                            var playersIndex: [Int] = []
+                            var thePlayersCommand: Int = 0
+                            var isAmongIndices: Bool = false
+                            var playerYesNo: String = ""
+                            let allCommands: [String] = ["yes", "no"]
                                 
-                                var playersOnTileNames: [String] = []
-                                var playersIndex: [Int] = []
-                                var thePlayersCommand: Int = 0
-                                var isAmongIndices: Bool = false
-                                var playerYesNo: String = ""
-                                let allCommands: [String] = ["yes", "no"]
-                                
-                                print("On this tile there are already other players!")
-                                for i in 1...totalPlayers {
-                                    if players[i-1].name != currentPlayer.name {
-                                        if currentPlayer.positionRowCol.x == players[i-1].positionRowCol.x && 
-                                        currentPlayer.positionRowCol.y == players[i-1].positionRowCol.y {
-                                            playersOnTileNames.append(players[i-1].name)
-                                            playersIndex.append(i)
-                                            print("\(players[i-1].name) is on the tile!")
-                                        }
+                            print("On this tile there are already other players!")
+                            for i in 1...totalPlayers {
+                                if players[i-1].name != currentPlayer.name {
+                                    if currentPlayer.positionRowCol.x == players[i-1].positionRowCol.x && 
+                                    currentPlayer.positionRowCol.y == players[i-1].positionRowCol.y {
+                                        playersIndex.append(i)
+                                        print("\(players[i-1].name) is on the tile!")
                                     }
-                                }       
+                                }
+                            }       
+
+                            if playersIndex.isEmpty == false {
                                 print("Do you want to attack someone?")
                                 repeat {
                                     print("Please choose one of the following commands:")
