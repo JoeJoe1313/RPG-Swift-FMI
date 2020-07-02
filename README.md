@@ -48,9 +48,7 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
 
 Повече информация може да намерите [тук] (https://github.com/SwiftFMI/rpgcore).
 
-## За мен
-
-**Промени:** 
+## Промени
 
 * **enum MapTileType**
     * добавяне на **player1**, **player2**, **player3**, **player4**, за да може да се визуализира къде се намират играчите на самата карта
@@ -69,3 +67,9 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
 
 * **protocol Weapon**
     * промяна на променливата **attack** от {get} на **{get set}**, за да можем да извършим добавяне на бонус атака, идващ от rock
+    
+## TODO
+ 
+* check the EquipmentGenerator and similar.... 
+* insert the fight module
+* what happens when the first move can be attack
