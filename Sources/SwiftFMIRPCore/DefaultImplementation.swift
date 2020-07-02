@@ -201,6 +201,14 @@ class DefaultEquipmentGenerator : EquipmentGenerator {
        allArmors = [NoArmor(), LightArmor(), MediumArmor(), HeavyArmor()]
        allWeapons = [WoodenStick(), Axe(), Bow(), Sword()]
     }
+
+    func randomArmor() -> Armor {
+        return self.allArmors.randomElement()!
+    }
+
+    func randomWeapon() -> Weapon {
+        return self.allWeapons.randomElement()!
+    }
 }
 
 class DefaultMapRenderer: MapRenderer {
