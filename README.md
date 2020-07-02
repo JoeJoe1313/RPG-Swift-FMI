@@ -70,6 +70,6 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
     
 ## TODO
  
-* check the EquipmentGenerator and similar.... 
-* insert the fight module
-* what happens when the first move can be attack
+* do the fight module
+* map generator 
+* think about visualisation
