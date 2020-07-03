@@ -58,12 +58,31 @@ struct DefaultMapGenerator : MapGenerator {
                 positions.append(Corrdinates(x: i, y: j))
             }
         }
-        generateTiles(map: &map, positions: &positions, count: 5, type: .teleport)
-        generateTiles(map: &map, positions: &positions, count: 3, type: .rock)
-        generateTiles(map: &map, positions: &positions, count: 2, type: .chest)
-        generateTiles(map: &map, positions: &positions, count: 20, type: .wall)
-        generateTiles(map: &map, positions: &positions, count: 1, type: .player1)
-        generateTiles(map: &map, positions: &positions, count: 1, type: .player2)
+        if players.count == 2 {
+            generateTiles(map: &map, positions: &positions, count: 3, type: .teleport)
+            generateTiles(map: &map, positions: &positions, count: 3, type: .rock)
+            generateTiles(map: &map, positions: &positions, count: 5, type: .chest)
+            generateTiles(map: &map, positions: &positions, count: 30, type: .wall)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player1)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player2)
+        } else if players.count == 3 {
+            generateTiles(map: &map, positions: &positions, count: 5, type: .teleport)
+            generateTiles(map: &map, positions: &positions, count: 5, type: .rock)
+            generateTiles(map: &map, positions: &positions, count: 10, type: .chest)
+            generateTiles(map: &map, positions: &positions, count: 40, type: .wall)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player1)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player2)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player3)
+        } else if players.count == 4 {
+            generateTiles(map: &map, positions: &positions, count: 8, type: .teleport)
+            generateTiles(map: &map, positions: &positions, count: 8, type: .rock)
+            generateTiles(map: &map, positions: &positions, count: 15, type: .chest)
+            generateTiles(map: &map, positions: &positions, count: 50, type: .wall)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player1)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player2)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player3)
+            generateTiles(map: &map, positions: &positions, count: 1, type: .player4)
+        }
 
         return map
     }
