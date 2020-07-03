@@ -94,93 +94,27 @@ class DefaultMapTile: MapTile {
 
 class DefaultMap : Map {
     required init(players: [Player]) {
+        var size_x: Int, size_y: Int
         if players.count == 2 {
-            self.maze = [
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
-        
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
-        
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-        
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .rock), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-        
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .teleport),DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-        
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .teleport), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .rock), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall)]
-            ]
+            size_x = 10
+            size_y = 10
         } else if players.count == 3 {
-            self.maze = [
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-        
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
-        
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-        
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .rock), DefaultMapTile(type: .wall), DefaultMapTile(type: .teleport), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .teleport), DefaultMapTile(type: .wall), DefaultMapTile(type: .rock), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-        
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-        
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .rock), DefaultMapTile(type: .wall), DefaultMapTile(type: .teleport), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall)]
-            ]
+            size_x = 13
+            size_y = 13
         } else if players.count == 4 {
-            self.maze = [
-                [DefaultMapTile(type: .player3), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .player2)],
-
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .rock), DefaultMapTile(type: .wall), DefaultMapTile(type: .teleport), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .teleport), DefaultMapTile(type: .wall), DefaultMapTile(type: .rock), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .rock), DefaultMapTile(type: .wall), DefaultMapTile(type: .teleport), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .teleport), DefaultMapTile(type: .wall), DefaultMapTile(type: .rock), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
-
-                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
-
-                [DefaultMapTile(type: .player1), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .player4)]
-            ]
+            size_x = 15
+            size_y = 15
         } else {
-            self.maze = []
+            size_x = 0
+            size_y = 0
             print("Wrong number of players!")
+        }
+        self.maze = []
+        for i in 0...size_x {
+            self.maze.append([])
+            for _ in 0...size_y {
+                self.maze[i].append(DefaultMapTile(type: .empty))
+            }
         }
         self.players = players
     }
