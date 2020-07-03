@@ -14,7 +14,7 @@ struct DefaultPlayerGenerator: PlayerGenerator {
     }
     
     func generatePlayer(name: String) -> Player {
-        var player = DefaultPlayer()
+        let player = DefaultPlayer()
         player.name = name
         player.hero = heroGenerator.getRandom()
         return player
@@ -30,8 +30,55 @@ struct DefaultHeroGenerator: HeroGenerator {
 }
 
 struct DefaultMapGenerator : MapGenerator {
+    var tileTypes: [MapTile] = [DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .rock),
+                                DefaultMapTile(type: .wall), DefaultMapTile(type: .teleport)]
+
     func generate(players: [Player]) -> Map {
-        return DefaultMap(players: players)
+        var rowsCount: Int = 0
+        var colsCount: Int = 0
+        var map: Map = DefaultMap(players: players) 
+
+        if players.count == 2 {
+            rowsCount = 9 
+            colsCount = 10
+        } else if players.count == 3 {
+            rowsCount = 9 // should be corrected
+            colsCount = 10 // should be corrected
+        } else if players.count == 4 {
+            rowsCount = 9 // should be corrected
+            colsCount = 10 // should be corrected
+        }
+
+        var player1IsSet: Bool = false
+        var player2IsSet: Bool = false 
+        var player3IsSet: Bool = false 
+        var player4IsSet: Bool = false 
+        for i in 1...players.count {
+            if players[i-1].name == "Player #1" && player1IsSet == false{
+                map.maze[Int.random(in: 0 ... rowsCount)][Int.random(in: 0 ... colsCount)].type = .player1
+                player1IsSet = true
+            } else if players[i-1].name == "Player #2" && player2IsSet == false {
+                map.maze[Int.random(in: 0 ... rowsCount)][Int.random(in: 0 ... colsCount)].type = .player2
+                player2IsSet = true
+            } else if players[i-1].name == "Player #3" && player3IsSet == false {
+                map.maze[Int.random(in: 0 ... rowsCount)][Int.random(in: 0 ... colsCount)].type = .player3
+                player3IsSet = true
+            } else if players[i-1].name == "Player #4" && player4IsSet == false {
+                map.maze[Int.random(in: 0 ... rowsCount)][Int.random(in: 0 ... colsCount)].type = .player4
+                player4IsSet = true
+            }
+        }
+
+        for rows in 0...rowsCount {
+            for cols in 0...colsCount {
+                if map.maze[rows][cols].type != .player1 && map.maze[rows][cols].type != .player2 &&
+                map.maze[rows][cols].type != .player3 && map.maze[rows][cols].type != .player4 {
+                    map.maze[rows][cols] = tileTypes.randomElement()!
+                }
+            }  
+        }
+
+        return map
     }
 }
 
@@ -49,13 +96,13 @@ class DefaultMap : Map {
     required init(players: [Player]) {
         if players.count == 2 {
             self.maze = [
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .player2)],
+                [DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
         
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
+                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
         
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
+                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
         
-                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .rock), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
+                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .rock), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
         
                 [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .teleport),DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
         
@@ -67,11 +114,11 @@ class DefaultMap : Map {
 
                 [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
 
-                [DefaultMapTile(type: .player1), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall)]
+                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall)]
             ]
         } else if players.count == 3 {
             self.maze = [
-                [DefaultMapTile(type: .player3), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .player2)],
+                [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
         
                 [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty),DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty)],
         
@@ -95,7 +142,7 @@ class DefaultMap : Map {
 
                 [DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall)],
 
-                [DefaultMapTile(type: .player1), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall)]
+                [DefaultMapTile(type: .wall), DefaultMapTile(type: .empty), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall), DefaultMapTile(type: .wall)]
             ]
         } else if players.count == 4 {
             self.maze = [
