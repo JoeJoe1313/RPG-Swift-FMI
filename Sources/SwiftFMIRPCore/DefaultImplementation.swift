@@ -84,6 +84,8 @@ struct DefaultMapGenerator : MapGenerator {
             generateTiles(map: &map, positions: &positions, count: 1, type: .player4)
         }
 
+        // check if there is a path between all the players
+
         return map
     }
 }

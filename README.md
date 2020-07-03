@@ -71,5 +71,5 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
 ## TODO
  
 * do the fight module
-* map generator 
+* map generator -> check if there is a path between all the players
 * think about visualisation
