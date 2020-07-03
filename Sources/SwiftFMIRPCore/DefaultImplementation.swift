@@ -1,5 +1,9 @@
 import Foundation
 
+extension Collection {
+    func choose(_ n: Int) -> ArraySlice<Element> { shuffled().prefix(n) }
+}
+
 class DefaultPlayer: Player {
     var name: String = "Default Player"
     var hero: Hero = DefaultHero()
@@ -30,53 +34,36 @@ struct DefaultHeroGenerator: HeroGenerator {
 }
 
 struct DefaultMapGenerator : MapGenerator {
-    var tileTypes: [MapTile] = [DefaultMapTile(type: .empty), DefaultMapTile(type: .chest), DefaultMapTile(type: .rock),
-                                DefaultMapTile(type: .wall), DefaultMapTile(type: .teleport)]
+    struct Corrdinates: Equatable{
+        let x: Int
+        let y: Int
+    }
 
-    func generate(players: [Player]) -> Map {
-        var rowsCount: Int = 0
-        var colsCount: Int = 0
-        var map: Map = DefaultMap(players: players) 
-
-        if players.count == 2 {
-            rowsCount = 9 
-            colsCount = 10
-        } else if players.count == 3 {
-            rowsCount = 9 // should be corrected
-            colsCount = 10 // should be corrected
-        } else if players.count == 4 {
-            rowsCount = 9 // should be corrected
-            colsCount = 10 // should be corrected
-        }
-
-        var player1IsSet: Bool = false
-        var player2IsSet: Bool = false 
-        var player3IsSet: Bool = false 
-        var player4IsSet: Bool = false 
-        for i in 1...players.count {
-            if players[i-1].name == "Player #1" && player1IsSet == false{
-                map.maze[Int.random(in: 0 ... rowsCount)][Int.random(in: 0 ... colsCount)].type = .player1
-                player1IsSet = true
-            } else if players[i-1].name == "Player #2" && player2IsSet == false {
-                map.maze[Int.random(in: 0 ... rowsCount)][Int.random(in: 0 ... colsCount)].type = .player2
-                player2IsSet = true
-            } else if players[i-1].name == "Player #3" && player3IsSet == false {
-                map.maze[Int.random(in: 0 ... rowsCount)][Int.random(in: 0 ... colsCount)].type = .player3
-                player3IsSet = true
-            } else if players[i-1].name == "Player #4" && player4IsSet == false {
-                map.maze[Int.random(in: 0 ... rowsCount)][Int.random(in: 0 ... colsCount)].type = .player4
-                player4IsSet = true
+    func generateTiles(map: inout Map, positions: inout [Corrdinates], count: Int, type: MapTileType) {
+        let chosenPositions = positions.choose(count)
+        for position in chosenPositions {
+            map.maze[position.x][position.y] = DefaultMapTile(type: type)
+            if let index = positions.firstIndex(of: position) {
+                positions.remove(at: index)
             }
         }
+    }
 
-        for rows in 0...rowsCount {
-            for cols in 0...colsCount {
-                if map.maze[rows][cols].type != .player1 && map.maze[rows][cols].type != .player2 &&
-                map.maze[rows][cols].type != .player3 && map.maze[rows][cols].type != .player4 {
-                    map.maze[rows][cols] = tileTypes.randomElement()!
-                }
-            }  
+    func generate(players: [Player]) -> Map {
+        var map: Map = DefaultMap(players: players) 
+
+        var positions: [Corrdinates] = []
+        for i in 0...map.maze.count - 1{
+            for j in 0...map.maze[i].count - 1{
+                positions.append(Corrdinates(x: i, y: j))
+            }
         }
+        generateTiles(map: &map, positions: &positions, count: 5, type: .teleport)
+        generateTiles(map: &map, positions: &positions, count: 3, type: .rock)
+        generateTiles(map: &map, positions: &positions, count: 2, type: .chest)
+        generateTiles(map: &map, positions: &positions, count: 20, type: .wall)
+        generateTiles(map: &map, positions: &positions, count: 1, type: .player1)
+        generateTiles(map: &map, positions: &positions, count: 1, type: .player2)
 
         return map
     }
@@ -94,25 +81,25 @@ class DefaultMapTile: MapTile {
 
 class DefaultMap : Map {
     required init(players: [Player]) {
-        var size_x: Int, size_y: Int
+        var sizeX: Int, sizeY: Int
         if players.count == 2 {
-            size_x = 10
-            size_y = 10
+            sizeX = 10
+            sizeY = 10
         } else if players.count == 3 {
-            size_x = 13
-            size_y = 13
+            sizeX = 13
+            sizeY = 13
         } else if players.count == 4 {
-            size_x = 15
-            size_y = 15
+            sizeX = 15
+            sizeY = 15
         } else {
-            size_x = 0
-            size_y = 0
+            sizeX = 0
+            sizeY = 0
             print("Wrong number of players!")
         }
         self.maze = []
-        for i in 0...size_x {
+        for i in 0...sizeX - 1 {
             self.maze.append([])
-            for _ in 0...size_y {
+            for _ in 0...sizeY - 1 {
                 self.maze[i].append(DefaultMapTile(type: .empty))
             }
         }
