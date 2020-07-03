@@ -53,8 +53,8 @@ struct DefaultMapGenerator : MapGenerator {
         var map: Map = DefaultMap(players: players) 
 
         var positions: [Corrdinates] = []
-        for i in 0...map.maze.count - 1{
-            for j in 0...map.maze[i].count - 1{
+        for i in 0..<map.maze.count {
+            for j in 0..<map.maze[i].count {
                 positions.append(Corrdinates(x: i, y: j))
             }
         }
