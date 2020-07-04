@@ -283,21 +283,20 @@ class DefaultMapRenderer: MapRenderer {
     }
 
     func drawImageFromLocation(baseImage: Image, location: String, position: Point) {
-        let currentDirectory = URL(fileURLWithPath: FileManager().currentDirectoryPath)
-        let location = currentDirectory.appendingPathComponent(location)
-        let tileImage = Image(url: location)!
+        let tileImage = Image(url: URL(fileURLWithPath: location))!
         let tileImageResized = tileImage.resizedTo(width: 49, height: 49, applySmoothing: true)!
         self.pasteImageOver(baseImage: baseImage, image: tileImageResized, start: Point(x: position.x, y: position.y))
     }
 
     func render(map: Map) {
         renderMapLegend()
-        shell("rm -f ../Images/map.png")
-        let currentDirectory = URL(fileURLWithPath: FileManager().currentDirectoryPath)
-        let destination = currentDirectory.appendingPathComponent("../Images/map.png")
-
+        var dirList = #file.components(separatedBy: "/")
+        dirList.removeLast(3)
+        let baseDir = dirList.joined(separator: "/") + "/Images"
+        shell("rm -f \(baseDir)/map.png")
+        let currentDirectory = URL(fileURLWithPath: baseDir)
+        let destination = currentDirectory.appendingPathComponent("/map.png")
         let sizeX = map.maze[0].count, sizeY = map.maze.count
-        // attempt to create a new 500x500 image
         if let image = Image(width: sizeX * 50 + 1, height: sizeY * 50 + 1) {
             image.fillRectangle(
                 topLeft: Point(x: 0, y: 0),
@@ -316,28 +315,28 @@ class DefaultMapRenderer: MapRenderer {
                 for j in 0..<map.maze[i].count {
                     let position = Point(x: j * 50 + 1, y: i * 50 + 1)
                     if map.maze[i][j].type == .player1 {
-                        drawImageFromLocation(baseImage: image, location: "../Images/1.png", position: position)
+                        drawImageFromLocation(baseImage: image, location: "\(baseDir)/1.png", position: position)
                     }
                     if map.maze[i][j].type == .player2 {
-                        drawImageFromLocation(baseImage: image, location: "../Images/2.png", position: position)
+                        drawImageFromLocation(baseImage: image, location: "\(baseDir)/2.png", position: position)
                     }
                     if map.maze[i][j].type == .player3 {
-                        drawImageFromLocation(baseImage: image, location: "../Images/3.png", position: position)
+                        drawImageFromLocation(baseImage: image, location: "\(baseDir)/3.png", position: position)
                     }
                     if map.maze[i][j].type == .player4 {
-                        drawImageFromLocation(baseImage: image, location: "../Images/4.png", position: position)
+                        drawImageFromLocation(baseImage: image, location: "\(baseDir)/4.png", position: position)
                     }
                     if map.maze[i][j].type == .rock {
-                        drawImageFromLocation(baseImage: image, location: "../Images/rock.png", position: position)
+                        drawImageFromLocation(baseImage: image, location: "\(baseDir)/rock.png", position: position)
                     }
                     if map.maze[i][j].type == .wall {
-                        drawImageFromLocation(baseImage: image, location: "../Images/wall.png", position: position)
+                        drawImageFromLocation(baseImage: image, location: "\(baseDir)/wall.png", position: position)
                     }
                     if map.maze[i][j].type == .chest {
-                        drawImageFromLocation(baseImage: image, location: "../Images/chest.png", position: position)
+                        drawImageFromLocation(baseImage: image, location: "\(baseDir)/chest.png", position: position)
                     }
                     if map.maze[i][j].type == .teleport {
-                        drawImageFromLocation(baseImage: image, location: "../Images/teleport.png", position: position)
+                        drawImageFromLocation(baseImage: image, location: "\(baseDir)/teleport.png", position: position)
                     }
                 }
             } 
@@ -346,7 +345,7 @@ class DefaultMapRenderer: MapRenderer {
             while !created {
                 created = image.write(to: destination)
             }
-            shell("xdg-open ../Images/map.png")
+            shell("xdg-open \(baseDir)/map.png")
         }
     }
     

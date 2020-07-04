@@ -2,7 +2,7 @@
 
 In order for the project to run you need to install libgd-dev:
 ```bash
-sudyo apt-get install libgd-dev
+sudo apt-get install libgd-dev
 ```
 
 # SwiftFMIRPCore
