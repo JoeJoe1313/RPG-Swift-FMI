@@ -34,12 +34,76 @@ struct DefaultHeroGenerator: HeroGenerator {
 }
 
 struct DefaultMapGenerator : MapGenerator {
-    struct Corrdinates: Equatable{
+    struct Coordinates: Equatable {
         let x: Int
         let y: Int
     }
 
-    func generateTiles(map: inout Map, positions: inout [Corrdinates], count: Int, type: MapTileType) {
+    func isValidPosition(map: Map, position: Coordinates) -> Bool {
+        if (position.x < 0 || position.y < 0) {
+            return false
+        }
+        if (position.x >= map.maze.count || position.y >= map.maze[position.x].count) {
+            return false
+        }
+        if map.maze[position.x][position.y].type == .wall {
+            return false
+        }
+        return true
+    }
+
+    func generatePossibleMoves(position: Coordinates) -> [Coordinates] {
+        let moves = [(-1, -1), (1, 1), (-1, 1), (1, -1)]
+        var result: [Coordinates] = []
+        for move in moves {
+            result.append(Coordinates(x: position.x + move.0, y: position.y + move.1))
+        }
+        return result
+    }
+
+    func validateMap(map: Map) -> Bool {
+        if map.maze.count == 0 {
+            return false
+        }
+        var q: [Coordinates] = []
+        var count = 0
+        for i in 0..<map.maze.count {
+            for j in 0..<map.maze[i].count {
+                let t = map.maze[i][j].type
+                if (t == .player1 || t == .player2 || t == .player3 || t == .player4) {
+                    count += 1
+                    if q.count == 0 {
+                        q.append(Coordinates(x: i, y: j))
+                    }
+                }
+            }
+        }
+        if q.isEmpty {
+            return false
+        }
+        var found = q.count
+        var visited = Array(repeating: Array(repeating: false, count: map.maze.count), count: map.maze[0].count)
+        for position in q {
+            visited[position.x][position.y] = true
+        }
+        while !q.isEmpty {
+            let current = q.removeFirst()
+            for new_position in self.generatePossibleMoves(position: current) {
+                if (self.isValidPosition(map: map, position: new_position) && !visited[new_position.x][new_position.y]) {
+                    q.append(new_position)
+                    visited[new_position.x][new_position.y] = true
+                    let t = map.maze[new_position.x][new_position.y].type
+                    if (t == .player1 || t == .player2 || t == .player3 || t == .player4) {
+                        found += 1
+                    }
+                }
+            }
+        }
+
+        return found == count
+    }
+
+    func generateTiles(map: inout Map, positions: inout [Coordinates], count: Int, type: MapTileType) {
         let chosenPositions = positions.choose(count)
         for position in chosenPositions {
             map.maze[position.x][position.y] = DefaultMapTile(type: type)
@@ -49,13 +113,13 @@ struct DefaultMapGenerator : MapGenerator {
         }
     }
 
-    func generate(players: [Player]) -> Map {
+    func generateHelper(players: [Player]) -> Map {
         var map: Map = DefaultMap(players: players) 
 
-        var positions: [Corrdinates] = []
+        var positions: [Coordinates] = []
         for i in 0..<map.maze.count {
             for j in 0..<map.maze[i].count {
-                positions.append(Corrdinates(x: i, y: j))
+                positions.append(Coordinates(x: i, y: j))
             }
         }
         if players.count == 2 {
@@ -83,11 +147,18 @@ struct DefaultMapGenerator : MapGenerator {
             generateTiles(map: &map, positions: &positions, count: 1, type: .player3)
             generateTiles(map: &map, positions: &positions, count: 1, type: .player4)
         }
-
-        // check if there is a path between all the players
-
         return map
     }
+
+    func generate(players: [Player]) -> Map {
+        var map: Map = self.generateHelper(players: players)
+        while !self.validateMap(map: map) {
+            print("Bad map. Trying again...")
+            map = self.generateHelper(players: players)
+        }
+        return map
+    }    
+
 }
 
 class DefaultMapTile: MapTile {
