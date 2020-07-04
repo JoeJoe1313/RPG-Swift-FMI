@@ -1,16 +1,21 @@
 # SwiftFMIRPCore
 This project defines the main building blocks for a RolePlayingGame. It conatians a stub implementation to show that a game can be build. The project is separaetd into several modules and each module can be re-defined.
 
-## Requirement
+# Requirements
 
-# Ubuntu
+### Ubuntu
 In order for the project to run you need to install libgd-dev:
 ```bash
 sudo apt-get install libgd-dev
 ```
-# Windows 
+### Windows 
 
-[For windows see here](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/)
+For windows see [here](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/)
+
+This setting only applies to your current Bash session. If you close the window, Bash will forget it. You’ll have to run this command each time you reopen Bash and want to run a graphical application.
+```bash
+export DISPLAY=:0
+```
 
 note: you should close the app before you can make a move 
 
