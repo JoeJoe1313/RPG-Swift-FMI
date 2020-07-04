@@ -1,4 +1,5 @@
 import Foundation
+import SwiftGD
 
 extension Collection {
     func choose(_ n: Int) -> ArraySlice<Element> { shuffled().prefix(n) }
@@ -272,12 +273,81 @@ class DefaultEquipmentGenerator : EquipmentGenerator {
 }
 
 class DefaultMapRenderer: MapRenderer {
-    func render(map: Map) {
-        for row in map.maze {
-            self.renderMapRow(row: row)
+    func pasteImageOver(baseImage: Image, image: Image, start: Point) {
+        let width = image.size.width - 1, height = image.size.width - 1
+        for x in 0 ... height {
+            for y in 0 ... width {
+                baseImage.set(pixel: Point(x: start.x + x, y: start.y + y), to: image.get(pixel: Point(x: x, y: y)))
+            }
         }
-        
+    }
+
+    func drawImageFromLocation(baseImage: Image, location: String, position: Point) {
+        let currentDirectory = URL(fileURLWithPath: FileManager().currentDirectoryPath)
+        let location = currentDirectory.appendingPathComponent(location)
+        let tileImage = Image(url: location)!
+        let tileImageResized = tileImage.resizedTo(width: 49, height: 49, applySmoothing: true)!
+        self.pasteImageOver(baseImage: baseImage, image: tileImageResized, start: Point(x: position.x, y: position.y))
+    }
+
+    func render(map: Map) {
         renderMapLegend()
+        shell("rm -f ../Images/map.png")
+        let currentDirectory = URL(fileURLWithPath: FileManager().currentDirectoryPath)
+        let destination = currentDirectory.appendingPathComponent("../Images/map.png")
+
+        let sizeX = map.maze[0].count, sizeY = map.maze.count
+        // attempt to create a new 500x500 image
+        if let image = Image(width: sizeX * 50 + 1, height: sizeY * 50 + 1) {
+            image.fillRectangle(
+                topLeft: Point(x: 0, y: 0),
+                bottomRight: Point(x: sizeX * 50 + 1, y: sizeY * 50 + 1),
+                color: Color(red: 0.73, green: 0.72, blue: 0.42, alpha: 1)
+            )
+            for i in stride(from: 0, to: sizeX * 50 + 1, by: 50) {
+                image.drawLine(from: Point(x: i, y: 0), to: Point(x: i, y: sizeY * 50), color: Color.white)
+            }
+
+            for i in stride(from: 0, to: sizeY * 50 + 1, by: 50) {
+                image.drawLine(from: Point(x: 0, y: i), to: Point(x: sizeX * 50, y: i), color: Color.white)
+            }
+
+            for i in 0..<map.maze.count {
+                for j in 0..<map.maze[i].count {
+                    let position = Point(x: j * 50 + 1, y: i * 50 + 1)
+                    if map.maze[i][j].type == .player1 {
+                        drawImageFromLocation(baseImage: image, location: "../Images/1.png", position: position)
+                    }
+                    if map.maze[i][j].type == .player2 {
+                        drawImageFromLocation(baseImage: image, location: "../Images/2.png", position: position)
+                    }
+                    if map.maze[i][j].type == .player3 {
+                        drawImageFromLocation(baseImage: image, location: "../Images/3.png", position: position)
+                    }
+                    if map.maze[i][j].type == .player4 {
+                        drawImageFromLocation(baseImage: image, location: "../Images/4.png", position: position)
+                    }
+                    if map.maze[i][j].type == .rock {
+                        drawImageFromLocation(baseImage: image, location: "../Images/rock.png", position: position)
+                    }
+                    if map.maze[i][j].type == .wall {
+                        drawImageFromLocation(baseImage: image, location: "../Images/wall.png", position: position)
+                    }
+                    if map.maze[i][j].type == .chest {
+                        drawImageFromLocation(baseImage: image, location: "../Images/chest.png", position: position)
+                    }
+                    if map.maze[i][j].type == .teleport {
+                        drawImageFromLocation(baseImage: image, location: "../Images/teleport.png", position: position)
+                    }
+                }
+            } 
+            
+            var created = image.write(to: destination)
+            while !created {
+                created = image.write(to: destination)
+            }
+            shell("xdg-open ../Images/map.png")
+        }
     }
     
     private func renderMapRow(row: [MapTile]) {
@@ -322,4 +392,14 @@ class DefaultMapRenderer: MapRenderer {
         print("3️⃣  - Player 3")
         print("4️⃣  - Player 4")
     }
+}
+
+func shell(_ command: String) {
+    let task = Process()
+    let pipe = Pipe()
+
+    task.standardOutput = pipe
+    task.arguments = ["-c", command]
+    task.executableURL = URL(string: "/bin/bash")
+    try! task.run()
 }

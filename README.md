@@ -1,3 +1,10 @@
+# Requirement
+
+In order for the project to run you need to install libgd-dev:
+```bash
+sudyo apt-get install libgd-dev
+```
+
 # SwiftFMIRPCore
 This project defines the main building blocks for a RolePlayingGame. It conatians a stub implementation to show that a game can be build. The project is separaetd into several modules and each module can be re-defined.
 
