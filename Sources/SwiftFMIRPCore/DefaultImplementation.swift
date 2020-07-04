@@ -290,10 +290,11 @@ class DefaultMapRenderer: MapRenderer {
 
     func render(map: Map) {
         renderMapLegend()
+        let bash: CommandExecuting = Bash()
         var dirList = #file.components(separatedBy: "/")
         dirList.removeLast(3)
         let baseDir = dirList.joined(separator: "/") + "/Images"
-        shell("rm -f \(baseDir)/map.png")
+        let _ = bash.run(commandName: "rm", arguments: ["-f", "\(baseDir)/map.png"])
         let currentDirectory = URL(fileURLWithPath: baseDir)
         let destination = currentDirectory.appendingPathComponent("/map.png")
         let sizeX = map.maze[0].count, sizeY = map.maze.count
@@ -345,7 +346,7 @@ class DefaultMapRenderer: MapRenderer {
             while !created {
                 created = image.write(to: destination)
             }
-            shell("xdg-open \(baseDir)/map.png")
+            let _ = bash.run(commandName: "xdg-open", arguments: ["\(baseDir)/map.png"])
         }
     }
     
@@ -391,14 +392,4 @@ class DefaultMapRenderer: MapRenderer {
         print("3️⃣  - Player 3")
         print("4️⃣  - Player 4")
     }
-}
-
-func shell(_ command: String) {
-    let task = Process()
-    let pipe = Pipe()
-
-    task.standardOutput = pipe
-    task.arguments = ["-c", command]
-    task.executableURL = URL(string: "/bin/bash")
-    try! task.run()
 }
