@@ -54,7 +54,7 @@ struct DefaultMapGenerator : MapGenerator {
     }
 
     func generatePossibleMoves(position: Coordinates) -> [Coordinates] {
-        let moves = [(-1, -1), (1, 1), (-1, 1), (1, -1)]
+        let moves = [(-1, 0), (1, 0), (0, 1), (0, -1)]
         var result: [Coordinates] = []
         for move in moves {
             result.append(Coordinates(x: position.x + move.0, y: position.y + move.1))
