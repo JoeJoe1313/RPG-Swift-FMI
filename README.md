@@ -1,12 +1,37 @@
+# SwiftFMIRPCore
+This project defines the main building blocks for a RolePlayingGame. It conatians a stub implementation to show that a game can be build. The project is separaetd into several modules and each module can be re-defined.
+
 # Requirement
 
 In order for the project to run you need to install libgd-dev:
 ```bash
 sudo apt-get install libgd-dev
 ```
+(This has only been tested on Ubuntu)
 
-# SwiftFMIRPCore
-This project defines the main building blocks for a RolePlayingGame. It conatians a stub implementation to show that a game can be build. The project is separaetd into several modules and each module can be re-defined.
+## Промени
+
+* **enum MapTileType**
+    * добавяне на **player1**, **player2**, **player3**, **player4**, за да може да се визуализира къде се намират играчите на самата карта
+
+* **protocol Player**
+    * добавяне на **positionRowCol**, за да можем да пазим и достъпваме позицията на играча
+    
+    * промяна на **player** параметър в move на **inout**, за да може да бъде неконстантен, тъй като искаме да сменим позицията му
+
+* **protocol Map**
+    * промяна на променлива **maze** от {get} на **{get set}**, за да можем да извършим изтриването на икона на играч, избрал seppuku
+
+* **Game.swift**
+    * добавяне на команда **exit** за излизане от играта
+    * промяна на **map** от let на **var**, за да можем да извършим изтриването на икона на играч, избрал seppuku
+
+* **protocol Weapon**
+    * промяна на променливата **attack** от {get} на **{get set}**, за да можем да извършим добавяне на бонус атака, идващ от rock
+    
+## TODO
+ 
+* do the fight module
 
 ## Final Project (Draft)
 Всеки стдудент, работещ над този финален проект, трябва да реализира поне два от модулите, описани по-долу, в собствено репозитори, изпозлвайки Swift и знанията от курса.
@@ -54,29 +79,3 @@ This project defines the main building blocks for a RolePlayingGame. It conatian
 ## Имплементация 
 
 Повече информация може да намерите [тук] (https://github.com/SwiftFMI/rpgcore).
-
-## Промени
-
-* **enum MapTileType**
-    * добавяне на **player1**, **player2**, **player3**, **player4**, за да може да се визуализира къде се намират играчите на самата карта
-
-* **protocol Player**
-    * добавяне на **positionRowCol**, за да можем да пазим и достъпваме позицията на играча
-    
-    * промяна на **player** параметър в move на **inout**, за да може да бъде неконстантен, тъй като искаме да сменим позицията му
-
-* **protocol Map**
-    * промяна на променлива **maze** от {get} на **{get set}**, за да можем да извършим изтриването на икона на играч, избрал seppuku
-
-* **Game.swift**
-    * добавяне на команда **exit** за излизане от играта
-    * промяна на **map** от let на **var**, за да можем да извършим изтриването на икона на играч, избрал seppuku
-
-* **protocol Weapon**
-    * промяна на променливата **attack** от {get} на **{get set}**, за да можем да извършим добавяне на бонус атака, идващ от rock
-    
-## TODO
- 
-* do the fight module
-* map generator -> check if there is a path between all the players
-* think about visualisation
