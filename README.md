@@ -9,7 +9,7 @@ In order for the project to run you need to install libgd-dev:
 sudo apt-get install libgd-dev
 ```
 
-**Note:** You might need to close the app showing the map and legend before you can make a move again.
+**Note:** You should close the app showing the map and legend before you can make a move again.
 
 ### Windows 
 
@@ -26,7 +26,7 @@ You’ll have to run this command each time you reopen Bash and want to run a gr
 export DISPLAY=:0
 ```
 
-**Note:** You might need to close the app showing the map and legend before you can make a move again.
+**Note:** You should close the app showing the map and legend before you can make a move again.
 
 ## Промени
 
