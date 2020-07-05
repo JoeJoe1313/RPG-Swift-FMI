@@ -274,22 +274,26 @@ class DefaultEquipmentGenerator : EquipmentGenerator {
 
 class DefaultMapRenderer: MapRenderer {
     func pasteImageOver(baseImage: Image, image: Image, start: Point) {
-        let width = image.size.width - 1, height = image.size.width - 1
-        for x in 0 ... height {
-            for y in 0 ... width {
+        let width = image.size.width, height = image.size.height
+        for x in 0 ..< width {
+            for y in 0 ..< height {
                 baseImage.set(pixel: Point(x: start.x + x, y: start.y + y), to: image.get(pixel: Point(x: x, y: y)))
             }
         }
     }
 
-    func drawImageFromLocation(baseImage: Image, location: String, position: Point) {
+    func drawImageFromLocation(baseImage: Image, location: String, position: Point, resize: Bool = true) {
         let tileImage = Image(url: URL(fileURLWithPath: location))!
-        let tileImageResized = tileImage.resizedTo(width: 49, height: 49, applySmoothing: true)!
-        self.pasteImageOver(baseImage: baseImage, image: tileImageResized, start: Point(x: position.x, y: position.y))
+        if resize {
+            let tileImageResized = tileImage.resizedTo(width: 49, height: 49, applySmoothing: true)!
+            self.pasteImageOver(baseImage: baseImage, image: tileImageResized, start: Point(x: position.x, y: position.y))
+        } else {
+            self.pasteImageOver(baseImage: baseImage, image: tileImage, start: Point(x: position.x, y: position.y))
+        }
+        
     }
 
     func render(map: Map) {
-        renderMapLegend()
         let bash: CommandExecuting = Bash()
         var dirList = #file.components(separatedBy: "/")
         dirList.removeLast(3)
@@ -298,11 +302,16 @@ class DefaultMapRenderer: MapRenderer {
         let currentDirectory = URL(fileURLWithPath: baseDir)
         let destination = currentDirectory.appendingPathComponent("/map.png")
         let sizeX = map.maze[0].count, sizeY = map.maze.count
-        if let image = Image(width: sizeX * 50 + 1, height: sizeY * 50 + 1) {
+        if let image = Image(width: sizeX * 50 + 1 + 410, height: sizeY * 50 + 1) {
             image.fillRectangle(
                 topLeft: Point(x: 0, y: 0),
                 bottomRight: Point(x: sizeX * 50 + 1, y: sizeY * 50 + 1),
                 color: Color(red: 0.73, green: 0.72, blue: 0.42, alpha: 1)
+            )
+            image.fillRectangle(
+                topLeft: Point(x: sizeX * 50 + 1, y: 0),
+                bottomRight: Point(x: sizeX * 50 + 1 + 410, y: sizeY * 50 + 1),
+                color: Color(red: 0.65, green: 0.65, blue: 0.35, alpha: 1)
             )
             for i in stride(from: 0, to: sizeX * 50 + 1, by: 50) {
                 image.drawLine(from: Point(x: i, y: 0), to: Point(x: i, y: sizeY * 50), color: Color.white)
@@ -312,20 +321,25 @@ class DefaultMapRenderer: MapRenderer {
                 image.drawLine(from: Point(x: 0, y: i), to: Point(x: sizeX * 50, y: i), color: Color.white)
             }
 
+            var playersCount = 0
             for i in 0..<map.maze.count {
                 for j in 0..<map.maze[i].count {
                     let position = Point(x: j * 50 + 1, y: i * 50 + 1)
                     if map.maze[i][j].type == .player1 {
                         drawImageFromLocation(baseImage: image, location: "\(baseDir)/1.png", position: position)
+                        playersCount += 1
                     }
                     if map.maze[i][j].type == .player2 {
                         drawImageFromLocation(baseImage: image, location: "\(baseDir)/2.png", position: position)
+                        playersCount += 1
                     }
                     if map.maze[i][j].type == .player3 {
                         drawImageFromLocation(baseImage: image, location: "\(baseDir)/3.png", position: position)
+                        playersCount += 1
                     }
                     if map.maze[i][j].type == .player4 {
                         drawImageFromLocation(baseImage: image, location: "\(baseDir)/4.png", position: position)
+                        playersCount += 1
                     }
                     if map.maze[i][j].type == .rock {
                         drawImageFromLocation(baseImage: image, location: "\(baseDir)/rock.png", position: position)
@@ -341,6 +355,18 @@ class DefaultMapRenderer: MapRenderer {
                     }
                 }
             } 
+
+            let totalHeight = sizeY * 50 + 1
+            let legendHeight = (4 + playersCount) * 60 - 10
+            let legendStartY = (totalHeight - legendHeight) / 2
+            let legendStartX = sizeX * 50 + 25
+            let images = ["chest", "rock", "teleport", "wall", "1", "2", "3", "4"]
+            for i in 0..<(4 + playersCount) {
+                let position_image = Point(x: legendStartX, y: legendStartY + i * 60)
+                let position_text = Point(x: legendStartX + 60, y: legendStartY + i * 60)
+                drawImageFromLocation(baseImage: image, location: "\(baseDir)/\(images[i]).png", position: position_image)
+                drawImageFromLocation(baseImage: image, location: "\(baseDir)/\(images[i])_text.png", position: position_text, resize: false)
+            }
             
             var created = image.write(to: destination)
             while !created {
@@ -348,48 +374,5 @@ class DefaultMapRenderer: MapRenderer {
             }
             let _ = bash.run(commandName: "xdg-open", arguments: ["\(baseDir)/map.png"])
         }
-    }
-    
-    private func renderMapRow(row: [MapTile]) {
-        var r = ""
-        for tile in row {
-            switch tile.type {
-            case .chest:
-                r += "📦"
-            case .rock:
-                r += "🗿"
-            case .teleport:
-                r += "💿"
-            case .empty:
-                r += "  "
-            case .wall:
-                r += "🧱"
-            case .player1:
-                r += "1️⃣ "
-            case .player2:
-                r += "2️⃣ "
-            case .player3:
-                r += "3️⃣ "
-            case .player4:
-                r += "4️⃣ "
-            default:
-                //empty
-                r += " "
-            }
-        }
-        
-        print("\(r)")
-    }
-    
-    private func renderMapLegend() {
-        print("\n")
-        print("📦 - Treasure Chest: contains weapon or armor")
-        print("🗿 - Rock: gives bonus attack 1")
-        print("💿 - Teleport: teleports you from one teleport to another")
-        print("🧱 - Wall: players cannot move to a wall tile")
-        print("1️⃣  - Player 1")
-        print("2️⃣  - Player 2")
-        print("3️⃣  - Player 3")
-        print("4️⃣  - Player 4")
     }
 }
