@@ -10,14 +10,20 @@ sudo apt-get install libgd-dev
 ```
 ### Windows 
 
-For windows see [here](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/)
+In order for the project to run you need to install libgd-dev:
+```bash
+sudo apt-get install libgd-dev
+```
 
-This setting only applies to your current Bash session. If you close the window, Bash will forget it. You’ll have to run this command each time you reopen Bash and want to run a graphical application.
+For Windows see [here](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/).
+
+**Important:**
+You’ll have to run this command each time you reopen Bash and want to run a graphical application.
 ```bash
 export DISPLAY=:0
 ```
 
-note: you should close the app before you can make a move 
+**Note:** You should close the app showing the map and legend before you can make a move again.
 
 ## Промени
 
